@@ -1,6 +1,10 @@
 
-# Packajes 
+# Packages 
 /node_modules
+
+# Config
+config/config.env
+config/credentials.config
 
 # Other
 package-lock.json
