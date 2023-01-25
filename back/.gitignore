@@ -1,0 +1,6 @@
+
+# Packajes 
+/node_modules
+
+# Other
+package-lock.json
