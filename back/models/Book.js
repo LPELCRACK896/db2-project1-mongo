@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const slugify = require('slugify');
 
 const BookSchema = new Schema({
-     title: {
+      title: {
           type: String,
-          required: true
+          required: true, 
+          unique: true
       },
+      slug: {
+        type: String, unique:true
+    },
       author: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Author',
@@ -22,8 +27,17 @@ const BookSchema = new Schema({
       year: {
           type: Number,
           required: false
+      }, 
+      isbn: {
+        type: String, 
+        required: false
       }
 });
+
+BookSchema.pre('validate', function(next){
+    this.slug = slugify(this.title, {lower: true})
+    next()
+})
 
 const Book = mongoose.model('Book', BookSchema);
 module.exports = Book;

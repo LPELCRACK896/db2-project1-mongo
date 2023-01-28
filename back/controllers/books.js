@@ -3,23 +3,80 @@ const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middlewares/async')
 const Book = require('../models/Book')
 const Author = require('../models/Author')
+const { query } = require('express')
 
-// @desc    Create one book
-// @route   POST /api/v1/book
-// @access   Public
+// @desc    Create single book
+// @route   POST /api/v1/books
+// @access   Private
 exports.createBook = asyncHandler(async (req, res, next ) => {
-    console.log(req.body)
     const author = await Author.findById(req.body.author);
-    if(!author) {
-        return res.status(404).json({
-            success: false,
-            error: "Author not found"
-        });
+    if(!author) return next(new ErrorResponse(`Couldnt find the author with id ${req.body.author}'`, 404))
+    let book = new Book({ title: req.body.title, author: author._id, publisher: req.body.publisher , pages: req.body.pages, year: req.body.year})
+    book = await book.save()
+    res.status(201).json({succes: true, book})
+})
+
+// @desc Get all books
+// @route GET /api/v1/books
+// @access Public
+exports.getBooks = asyncHandler(async (req, res, next)=>{
+    let query
+ 
+    //Copy of req.query
+    const reqQuery =  { ...req.query }
+    //Fields to exclue
+    const removeFields = ['select']
+    //Loop over removeFields and delete them for reqQuery
+    removeFields.forEach(param => delete reqQuery[param])
+
+    //Create a query string    
+    let queryStr = JSON.stringify(reqQuery)
+
+    // Create operators ($gt, $gte, etc)
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`) //Transform query operators into actual operators so Mongo can understand the query
+    
+    //Finding resources
+    query = Book.find(JSON.parse(queryStr))
+
+
+    //Select fields
+    if (req.query.select){
+        const fields = req.query.select.split(',').join(' ')
+        query = query.select(fields) //project
     }
-    const data = await Book.create({
-        title: req.body.title,
-        author: author._id,
-        pages: req.body.pages
+
+    const books = await query
+
+    res.status(200).json({succes: true, count: books.length, data: books})
+})
+
+// @desc    Get single book
+// @route   GET /api/v1/books/:id
+// @access   Public
+exports.getBook = asyncHandler(async (req, res, next)=>{
+    const book = await Book.findById(req.params.id)
+    if (book) return res.status(200).json({succes: true, book})
+    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+})
+
+
+// @desc Delets one book
+// @route GET /api/v1/books/:id
+// @access Private
+exports.deleteBook = asyncHandler(async(req, res, next)=>{
+    const book = await Book.findByIdAndDelete(req.params.id)
+    if (book) return res.status(200).json({succes: true, data: {} })
+    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+})
+
+// @desc Update one book
+// @route PUT /api/v1/books/:id
+// @access Private
+exports.updateBook = asyncHandler(async(req, res, next)=>{
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+        new: true, 
+        runValidators: true
     })
-    res.status(201).json({succes: true, data})
+    if (book) return res.status(200).json({succes: true, data: book})
+    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
