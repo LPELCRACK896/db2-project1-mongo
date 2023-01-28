@@ -1,8 +1,20 @@
-const mongoose = require('mongoose')
-const slugify = require('slugify')
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const BookScheema = mongoose.Schema({
-    
-})
+const BookSchema = new Schema({
+    title: { 
+            type: String,
+            required: true 
+    },
+    pages: {
+         type: Number, 
+         required: true 
+    },
+    author: {
+         type: Schema.Types.ObjectId, 
+         ref: 'Author' 
+    },
+});
 
-module.exports = mongoose.model('Book', BookScheema)
+const Book = mongoose.model('Book', BookSchema);
+module.exports = Book;
