@@ -12,6 +12,7 @@ connectDB()
 
 //Route files
 const books = require('./routes/books')
+const authors = require('./routes/authors')
 
 const app = express()
 
@@ -23,6 +24,8 @@ if(process.env.NODE_ENV == 'development') app.use(morgan('dev'))
 
 //Mount routes
 app.use('/api/v1/books', books)
+app.use('/api/v1/authors', authors)
+
 
 //Error handler middleware -> Must be after Mounting routes so it works in those. Middleware kinda works in a linear order. 
 app.use(errorHandler)
