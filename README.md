@@ -4,3 +4,7 @@
 # Autores
 - Luis Pedro Gonzalez Aldana
 - Rebecca Smith
+
+```
+npm install react-bootstrap bootstrap
+```
