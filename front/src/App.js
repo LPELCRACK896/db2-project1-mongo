@@ -36,6 +36,45 @@ function App() {
         {/* <Button variant="primary">Go somewhere</Button> */}
       </Card.Body>
     </Card>
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src={ATSAT} />
+      <Card.Body>
+        <Card.Title>Nombre del libro</Card.Title>
+        <Card.Text>
+          descripcion del libro
+        </Card.Text>
+        <Card.Text>
+          RAting
+        </Card.Text>
+        {/* <Button variant="primary">Go somewhere</Button> */}
+      </Card.Body>
+    </Card>
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src={ATSAT} />
+      <Card.Body>
+        <Card.Title>Nombre del libro</Card.Title>
+        <Card.Text>
+          descripcion del libro
+        </Card.Text>
+        <Card.Text>
+          RAting
+        </Card.Text>
+        {/* <Button variant="primary">Go somewhere</Button> */}
+      </Card.Body>
+    </Card>
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src={ATSAT} />
+      <Card.Body>
+        <Card.Title>Nombre del libro</Card.Title>
+        <Card.Text>
+          descripcion del libro
+        </Card.Text>
+        <Card.Text>
+          RAting
+        </Card.Text>
+        {/* <Button variant="primary">Go somewhere</Button> */}
+      </Card.Body>
+    </Card>
     </>
   );
 }
