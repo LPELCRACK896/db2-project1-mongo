@@ -25,7 +25,7 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
     //Copy of req.query
     const reqQuery =  { ...req.query }
     //Fields to exclue
-    const removeFields = ['select']
+    const removeFields = ['select', 'sort']
     //Loop over removeFields and delete them for reqQuery
     removeFields.forEach(param => delete reqQuery[param])
 
@@ -39,12 +39,19 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
     query = Book.find(JSON.parse(queryStr))
 
 
-    //Select fields
+    //Select fields ---> Projection
     if (req.query.select){
         const fields = req.query.select.split(',').join(' ')
         query = query.select(fields) //project
     }
 
+    // Sort ---> Sort
+    if (req.query.sort){
+        const sortBy = req.query.sort.split(',').join(' ')
+        query = query.sort(sortBy)
+    }else{
+        query = query.sort('-createdAt')
+    }
     const books = await query
 
     res.status(200).json({succes: true, count: books.length, data: books})

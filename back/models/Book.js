@@ -31,7 +31,8 @@ const BookSchema = new Schema({
       isbn: {
         type: String, 
         required: false
-      }
+      }, 
+      createdAt: {type: Date, default: Date.now}
 });
 
 BookSchema.pre('validate', function(next){
