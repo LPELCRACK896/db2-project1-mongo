@@ -11,7 +11,7 @@ const { query } = require('express')
 exports.createBook = asyncHandler(async (req, res, next ) => {
     const author = await Author.findById(req.body.author);
     if(!author) return next(new ErrorResponse(`Couldnt find the author with id ${req.body.author}'`, 404))
-    let book = new Book({ title: req.body.title, author: author._id, publisher: req.body.publisher , pages: req.body.pages, year: req.body.year})
+    let book = new Book({ title: req.body.title, author: author._id, publisher: req.body.publisher , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc })
     book = await book.save()
     res.status(201).json({succes: true, book})
 })
