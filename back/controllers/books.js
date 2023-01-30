@@ -4,6 +4,7 @@ const asyncHandler = require('../middlewares/async')
 const {Book} = require('../models/Book')
 const {Author} = require('../models/Author')
 const { query } = require('express')
+const { default: mongoose } = require('mongoose')
 
 // @desc    Create single book
 // @route   POST /api/v1/books
@@ -85,8 +86,20 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
 // @route   GET /api/v1/books/:id
 // @access   Public
 exports.getBook = asyncHandler(async (req, res, next)=>{
-    const book = await Book.findById(req.params.id)
-    if (book) return res.status(200).json({succes: true, book})
+    const id = mongoose.Types.ObjectId(req.params.id)
+    const book = await Book.aggregate([
+        {$match: {_id: id}}, 
+        {$project: {
+            _id: "$_id",
+            author: "$author.name",
+            pages: "$pages",
+            year: "$year",  
+            desc: "$desc",
+            category: "$category",
+            rate: {$divide: ["$rate", "$timesRated"]}
+        }}
+    ])
+    if (book) return res.status(200).json({succes: true, book: book[0]})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
 
@@ -97,7 +110,6 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
 exports.deleteBook = asyncHandler(async(req, res, next)=>{
     let book = await Book.findById(req.params.id)
     if (!book) next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
-    console.log(book.author.auth_id)
     let author = await Author.findByIdAndUpdate(book.author.auth_id, {$pull: {books: {_id: book._id}}}, {new: true})
     book = await Book.findByIdAndDelete(req.params.id)
     if (book) return res.status(200).json({succes: true, author})
@@ -120,9 +132,9 @@ exports.updateBook = asyncHandler(async(req, res, next)=>{
 // @route PUT /api/v1/books/:id
 // @access Public
 exports.newRate = asyncHandler(async(req, res, next)=>{
-    const book = await Book.updateOne({_id: req.param.id}, { $inc: {timesRated: 1},$set: {rate: {$cond: [ {$eq: ["$timesRated", 1]}, req.body.newRate, {$divide: [{$add: [req.body.newRate, {$multiply: ["$rate",{$subtract: ["$timesRated", 1]}]}] }, "$timesRated"] }]}}})
-
-    
-
+    const id = mongoose.Types.ObjectId(req.params.id)
+    const book = await Book.findByIdAndUpdate({_id: id}, { $inc: {timesRated: 1, rate: req.body.rate}}, {new: true})
+    if (book) return res.status(200).json({succes: true, data: book})
+    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 
 })

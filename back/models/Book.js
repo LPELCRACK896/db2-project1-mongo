@@ -42,7 +42,7 @@ const BookSchema = new Schema({
     }, 
     rate: {
         type: Number,
-        default: 0
+        default: 3
     }, 
     desc: {
         type: String, 
@@ -57,7 +57,7 @@ const BookSchema = new Schema({
         type: Date, 
         default: Date.now
     },
-    timesRated: {type: Number, default: 0}
+    timesRated: {type: Number, default: 1}
 });
 
 BookSchema.pre('validate', function(next){
