@@ -4,6 +4,7 @@ const morgan =  require('morgan')
 const colors =  require('colors')
 const connectDB = require('./config/db')
 const errorHandler = require('./middlewares/error')
+const cookieParser = require('cookie-parser');
 
 //Load env vars
 dotenv.config({ path: './config/config.env' })
@@ -13,11 +14,15 @@ connectDB()
 //Route files
 const books = require('./routes/books')
 const authors = require('./routes/authors')
+const auth = require('./routes/auth')
 
 const app = express()
 
 //Body Parser
 app.use(express.json()) //Sin esta linea, los controladores no acceden al req.body
+
+//Cookie pareser
+app.use(cookieParser())
 
 // Dev logging middlewares
 if(process.env.NODE_ENV == 'development') app.use(morgan('dev'))
@@ -25,7 +30,7 @@ if(process.env.NODE_ENV == 'development') app.use(morgan('dev'))
 //Mount routes
 app.use('/api/v1/books', books)
 app.use('/api/v1/authors', authors)
-
+app.use('/api/v1/auth', auth)
 
 //Error handler middleware -> Must be after Mounting routes so it works in those. Middleware kinda works in a linear order. 
 app.use(errorHandler)

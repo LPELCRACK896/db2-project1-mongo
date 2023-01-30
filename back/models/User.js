@@ -1,7 +1,20 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const slugify = require('slugify');
-const Author = require('../models/Author')
+const {AuthorSchema} = require('../models/Author')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken')
+const embededAuthor = new Schema({
+    name: { 
+        type: String, 
+        required: true 
+    },
+    age: { 
+        type: Number, 
+        required: true 
+    }, 
+    auth_id: {type: String, required: true}
+})
 
 const UserScheema = new Schema({
     username: {
@@ -10,13 +23,53 @@ const UserScheema = new Schema({
         unique: true
     },
     email: {
+        type: String,
+        required: [true, 'Please add an email'],
+        unique: true,
+        match: [
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+          'Please add a valid email',
+        ],
+    }, 
+    role: {
         type: String, 
-        match: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-        required: true
+        enum: ["user", "publisher"],
+        default: "user"
     },
-    favBooks :[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],//referencial
-    favAuthor: Author, //Embeded
-    image: {type: String, enum: ['user_default1', 'user_default2', 'user_default3']}, 
+    password: {
+        type: String, 
+        required: true,
+        minlength: 6,
+        select: false
+    },  
+    resetPasswordToke: String,
+    resetPasswordExpire: Date,
+    createdAt: {
+        type: Date, 
+        default: Date.now
+    },
+    favBooks :[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],//Embeded
+    favAuthor: embededAuthor, //Embeded
+    image: {
+        type: String, 
+        enum: ['user_default1', 'user_default2', 'user_default3']
+    }, 
 })
+
+//Encrypt password using bcrypt
+UserScheema.pre('save', async function(next){
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+})
+//Sign JWT and return
+UserScheema.methods.getSignedJwtToken = function(){
+    return jwt.sign({id: this._id}, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE
+    })
+}
+//Match user entered password to hashed password in DB
+UserScheema.methods.matchPassword = async function (enteredPassword){
+    return await bcrypt.compare(enteredPassword, this.password, )
+}
 const User = mongoose.model('User', UserScheema)
 module.exports = {User, UserScheema}

@@ -9,8 +9,9 @@ const {
 } = require('../controllers/books');
 
 const router = express.Router()
+const {protect} = require('../middlewares/auth')
 
-router.route('/').post(createBook).get(getBooks)
-router.route('/:id').get(getBook).put(updateBook).delete(deleteBook)
-router.route('/rate/:id').put(newRate)
+router.route('/').post(protect, createBook).get(getBooks)
+router.route('/:id').get(getBook).put(protect,updateBook).delete(protect,deleteBook)
+router.route('/rate/:id').put(protect, newRate)
 module.exports = router

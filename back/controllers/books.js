@@ -3,8 +3,7 @@ const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middlewares/async')
 const {Book} = require('../models/Book')
 const {Author} = require('../models/Author')
-const { query } = require('express')
-const { default: mongoose } = require('mongoose')
+const { mongoose } = require('mongoose')
 
 // @desc    Create single book
 // @route   POST /api/v1/books

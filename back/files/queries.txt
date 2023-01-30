@@ -1,16 +1,6 @@
 db.books.updateOne(
   {_id: ObjectId("63d7600dc2b3a5007a19c286")}, 
   { 
-    $inc: {timesRated: 1},
-    $set: {
-      rate: {
-        $cond: {
-
-          if: {$eq: ["$timesRated", 1]}, 
-          then: 1, 
-          else: {$divide: [{$add: [5, {$multiply: ["$rate",{$subtract: ["$timesRated", 1]}]}] }, "$timesRated"] }
-      }
-      }
-    }
+    $inc: {timesRated: 1, rate: req.body.newRate}
   }
 )
