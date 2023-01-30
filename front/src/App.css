@@ -8,4 +8,17 @@
   display: inline-grid;
 }
 
+.agrega{
+  background-color: rgb(192, 97, 216);
+  border-radius: 10px;
+}
 
+.agrega:hover{
+  background-color: #282c34;
+  color: rgb(255, 255, 255);
+}
+
+.agrega:focus{
+  background-color: rgb(124, 170, 255);
+  color: rgb(0, 0, 0);
+}
