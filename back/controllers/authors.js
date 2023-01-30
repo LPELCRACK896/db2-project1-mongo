@@ -1,6 +1,6 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middlewares/async')
-const Author = require('../models/Author')
+const {Author} = require('../models/Author')
 
 // @desc    Create one book
 // @route   POST /api/v1/book

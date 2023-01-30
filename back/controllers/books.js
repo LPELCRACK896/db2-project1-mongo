@@ -1,19 +1,20 @@
 
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middlewares/async')
-const Book = require('../models/Book')
-const Author = require('../models/Author')
+const {Book} = require('../models/Book')
+const {Author} = require('../models/Author')
 const { query } = require('express')
 
 // @desc    Create single book
 // @route   POST /api/v1/books
 // @access   Private
 exports.createBook = asyncHandler(async (req, res, next ) => {
-    const author = await Author.findById(req.body.author);
+    let author = await Author.findById(req.body.author);
     if(!author) return next(new ErrorResponse(`Couldnt find the author with id ${req.body.author}'`, 404))
-    let book = new Book({ title: req.body.title, author: author._id, publisher: req.body.publisher , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc })
+    let book = new Book({ title: req.body.title, author: {name: author.name, age: author.age, auth_id: author._id}, publisher: req.body.publisher , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc, category: req.body.category})
     book = await book.save()
-    res.status(201).json({succes: true, book})
+    author = await Author.findByIdAndUpdate(req.body.author, {$push: {books: book}}, {new: true})
+    res.status(201).json({succes: true, book, author})
 })
 
 // @desc Get all books
@@ -25,7 +26,7 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
     //Copy of req.query
     const reqQuery =  { ...req.query }
     //Fields to exclue
-    const removeFields = ['select', 'sort']
+    const removeFields = ['select', 'sort', 'page', 'limit']
     //Loop over removeFields and delete them for reqQuery
     removeFields.forEach(param => delete reqQuery[param])
 
@@ -52,9 +53,32 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
     }else{
         query = query.sort('-createdAt')
     }
+    // Pagination
+    const page = parseInt(req.query.page, 10) || 1
+    const limit = parseInt(req.query.limit, 10) || 20
+    const startIndex = (page -1)*limit
+    const endIndex = page * limit
+    const total = await Book.countDocuments()
+
+    query = query.skip(startIndex).limit(limit)//MongoQuery Limit and skip
+    //Executing query
     const books = await query
 
-    res.status(200).json({succes: true, count: books.length, data: books})
+    //Pagination result
+    const pagination = {}
+    if(endIndex < total){
+        pagination.next = {
+            page: page+1,
+            limit
+        }
+    }
+    if (startIndex>0){
+        pagination.prev = {
+            page: page-1,
+            limit
+        }
+    }
+    res.status(200).json({succes: true, count: books.length, pagination, data: books})
 })
 
 // @desc    Get single book
@@ -71,8 +95,12 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
 // @route GET /api/v1/books/:id
 // @access Private
 exports.deleteBook = asyncHandler(async(req, res, next)=>{
-    const book = await Book.findByIdAndDelete(req.params.id)
-    if (book) return res.status(200).json({succes: true, data: {} })
+    let book = await Book.findById(req.params.id)
+    if (!book) next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+    console.log(book.author.auth_id)
+    let author = await Author.findByIdAndUpdate(book.author.auth_id, {$pull: {books: {_id: book._id}}}, {new: true})
+    book = await Book.findByIdAndDelete(req.params.id)
+    if (book) return res.status(200).json({succes: true, author})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
 
@@ -86,4 +114,15 @@ exports.updateBook = asyncHandler(async(req, res, next)=>{
     })
     if (book) return res.status(200).json({succes: true, data: book})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+})
+
+// @desc Gets a new rate
+// @route PUT /api/v1/books/:id
+// @access Public
+exports.newRate = asyncHandler(async(req, res, next)=>{
+    const book = await Book.updateOne({_id: req.param.id}, { $inc: {timesRated: 1},$set: {rate: {$cond: [ {$eq: ["$timesRated", 1]}, req.body.newRate, {$divide: [{$add: [req.body.newRate, {$multiply: ["$rate",{$subtract: ["$timesRated", 1]}]}] }, "$timesRated"] }]}}})
+
+    
+
+
 })

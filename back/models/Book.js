@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const slugify = require('slugify');
 
+const embededAuthor = new Schema({
+    name: { 
+        type: String, 
+        required: true 
+    },
+    age: { 
+        type: Number, 
+        required: true 
+    }, 
+    auth_id: {type: String, required: true}
+})
 const BookSchema = new Schema({
     title: {
         type: String,
@@ -12,11 +23,7 @@ const BookSchema = new Schema({
         type: String, 
         unique:true
     },
-    author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Author',
-        required: true
-    },
+    author: embededAuthor,
     publisher: {
         type: String,
         required: false
@@ -35,16 +42,22 @@ const BookSchema = new Schema({
     }, 
     rate: {
         type: Number,
-        default: 3
+        default: 0
     }, 
     desc: {
         type: String, 
         required: true
-    }, 
+    },
+    category: {
+        type: String, 
+        required: true, 
+        enum: ["Aventura", "Ciencia ficcion", "Fantasia", "Gotica", "Novela negra", "Romance", "Biografia", "Distopia"]
+    },
     createdAt: {
         type: Date, 
         default: Date.now
-    }
+    },
+    timesRated: {type: Number, default: 0}
 });
 
 BookSchema.pre('validate', function(next){
@@ -52,5 +65,6 @@ BookSchema.pre('validate', function(next){
     next()
 })
 
+
 const Book = mongoose.model('Book', BookSchema);
-module.exports = Book;
+module.exports = {Book, BookSchema};
