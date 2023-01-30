@@ -5,7 +5,7 @@ from pymongo import MongoClient
 
 def authors_gen(filename, total_authors):
     faker = Faker()
-    pd.DataFrame([{"name": faker.name(),"age":faker.random_int(min=18, max=65, step=1)} for i in range(total_authors)]).to_csv(filename, index=False)
+    pd.DataFrame([{"name": faker.name(),"age":faker.random_int(min=18, max=65, step=1)} for _ in range(total_authors)]).to_csv(filename, index=False)
 
 
 def csv_to_mongo(filename, collection, db_name, mongo_uri):
