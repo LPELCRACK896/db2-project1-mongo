@@ -17,12 +17,11 @@ exports.protect = asyncHandler(async(req, res, next)=>{
     } */
 
     //Make sure token exists
-    if(!token) return next(new ErrorResponse('Not authoirzae to acces tish route', 401))
+    if(!token) return next(new ErrorResponse('Not authoirzae to acces this route', 401))
 
     try{
         //Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(decoded)
         req.user = await User.findById(decoded.id)
         next()
     }catch(err){
@@ -32,3 +31,10 @@ exports.protect = asyncHandler(async(req, res, next)=>{
 })
 
 //Grant access to specific roles
+exports.authorize = (...roles) =>{
+    return (req, res, next) =>{
+        if(!roles.includes(req.user.role)) return  next(new ErrorResponse(`${req.user.role} role is unautohrized to acces this route`, 500))
+        next()
+
+    }
+}

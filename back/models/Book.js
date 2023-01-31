@@ -24,10 +24,6 @@ const BookSchema = new Schema({
         unique:true
     },
     author: embededAuthor,
-    publisher: {
-        type: String,
-        required: false
-    },
     pages: {
         type: Number,
         required: false
@@ -57,7 +53,13 @@ const BookSchema = new Schema({
         type: Date, 
         default: Date.now
     },
-    timesRated: {type: Number, default: 1}
+    timesRated: {type: Number, default: 1},
+    publisher: { 
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+
+    }
 });
 
 BookSchema.pre('validate', function(next){

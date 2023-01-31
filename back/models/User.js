@@ -4,6 +4,12 @@ const slugify = require('slugify');
 const {AuthorSchema} = require('../models/Author')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
+
+const embededBookSchema = new Schema({
+    rate: {type: Number, require: true},
+    book: {type: mongoose.Schema.Types.ObjectId, ref: 'Book'}
+})
+
 const embededAuthor = new Schema({
     name: { 
         type: String, 
@@ -49,6 +55,7 @@ const UserScheema = new Schema({
         default: Date.now
     },
     favBooks :[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],//Embeded
+    ratedBooks: [embededBookSchema],
     favAuthor: embededAuthor, //Embeded
     image: {
         type: String, 
@@ -72,4 +79,5 @@ UserScheema.methods.matchPassword = async function (enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password, )
 }
 const User = mongoose.model('User', UserScheema)
-module.exports = {User, UserScheema}
+const EmbededBook = mongoose.model('EmbededBook', embededBookSchema)
+module.exports = {User, UserScheema, EmbededBook, embededBookSchema}
