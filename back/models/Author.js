@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const {BookSchema} = require('./Book')
+const { BookSchema } = require('./Book')
 const AuthorSchema = new Schema({
     name: { 
         type: String, 
-        required: true 
+        required: [true, "Please add name to the author"] 
     },
     age: { 
         type: Number, 
-        required: true 
+        required: [true, "Must add age of the author"] 
     },
     books: [BookSchema],
 });

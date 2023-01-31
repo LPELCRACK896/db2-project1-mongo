@@ -26,7 +26,7 @@ const embededAuthor = new Schema({
 const UserScheema = new Schema({
     username: {
         type: String, 
-        required: true,
+        required: [true, "Please add username to the user"],
         unique: true
     },
     email: {
@@ -45,7 +45,7 @@ const UserScheema = new Schema({
     },
     password: {
         type: String, 
-        required: true,
+        required: [true, "Please type a password"],
         minlength: 6,
         select: false
     },  
@@ -55,7 +55,7 @@ const UserScheema = new Schema({
         type: Date, 
         default: Date.now
     },
-    favBooks :[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],//Embeded
+    favBooks :[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],//Referenced
     ratedBooks: [embededBookSchema],
     favAuthor: embededAuthor, //Embeded
     image: {
@@ -63,6 +63,13 @@ const UserScheema = new Schema({
         enum: ['user_default1', 'user_default2', 'user_default3']
     }, 
 })
+
+
+
+
+/* 
+    MONGOOSE MIDDLEWARE
+*/
 
 //Encrypt password using bcrypt
 UserScheema.pre('save', async function(next){
@@ -95,6 +102,7 @@ UserScheema.methods.getResetPasswordToken = async function(){
 
     return resetToken
 }
+
 const User = mongoose.model('User', UserScheema)
 const EmbededBook = mongoose.model('EmbededBook', embededBookSchema)
 module.exports = {User, UserScheema, EmbededBook, embededBookSchema}
