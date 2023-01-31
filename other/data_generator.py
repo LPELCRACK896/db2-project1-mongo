@@ -7,6 +7,9 @@ def authors_gen(filename, total_authors):
     faker = Faker()
     pd.DataFrame([{"name": faker.name(),"age":faker.random_int(min=18, max=65, step=1)} for _ in range(total_authors)]).to_csv(filename, index=False)
 
+def publishers_gen(filename, total_users):
+    faker = Faker()
+    pd.DataFrame([{"username": faker.name(),"email":faker.email(), "password": "admin123", "role": "publisher"} for _ in range(total_users)]).to_csv(filename, index=False)
 
 def csv_to_mongo(filename, collection, db_name, mongo_uri):
     client = MongoClient(mongo_uri)
