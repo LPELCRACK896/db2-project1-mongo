@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const slugify = require('slugify');
 const {AuthorSchema} = require('../models/Author')
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken')
 
 const embededBookSchema = new Schema({
@@ -48,7 +49,7 @@ const UserScheema = new Schema({
         minlength: 6,
         select: false
     },  
-    resetPasswordToke: String,
+    resetPasswordToken: String,
     resetPasswordExpire: Date,
     createdAt: {
         type: Date, 
@@ -65,6 +66,7 @@ const UserScheema = new Schema({
 
 //Encrypt password using bcrypt
 UserScheema.pre('save', async function(next){
+    if(!this.isModified('password')) next() //En caso hagamos un cambio en el usuario no relacionado con crear contraseña
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
@@ -77,6 +79,21 @@ UserScheema.methods.getSignedJwtToken = function(){
 //Match user entered password to hashed password in DB
 UserScheema.methods.matchPassword = async function (enteredPassword){
     return await bcrypt.compare(enteredPassword, this.password, )
+}
+//Generates and hash password token
+UserScheema.methods.getResetPasswordToken = async function(){
+    //Generate token
+    const resetToken = crypto.randomBytes(20).toString('hex')
+
+    //Hash token and set to resetPasswordToken field 
+
+    this.resetPasswordToken  = crypto.createHash('sha256').update(resetToken).digest('hex')
+
+    // Set expire
+
+    this.resetPasswordExpire = Date.now() + 10 * 60  * 1000
+
+    return resetToken
 }
 const User = mongoose.model('User', UserScheema)
 const EmbededBook = mongoose.model('EmbededBook', embededBookSchema)
