@@ -5,7 +5,6 @@ const {Book} = require('../models/Book')
 const {Author} = require('../models/Author')
 const {User, EmbededBook} = require('../models/User')
 const { mongoose } = require('mongoose')
-
 // @desc    Create single book
 // @route   POST /api/v1/books
 // @access   Private
@@ -27,64 +26,7 @@ exports.createBook = asyncHandler(async (req, res, next ) => {
 // @route GET /api/v1/books
 // @access Public
 exports.getBooks = asyncHandler(async (req, res, next)=>{
-    let query
- 
-    //Copy of req.query
-    const reqQuery =  { ...req.query }
-    //Fields to exclue
-    const removeFields = ['select', 'sort', 'page', 'limit']
-    //Loop over removeFields and delete them for reqQuery
-    removeFields.forEach(param => delete reqQuery[param])
-
-    //Create a query string    
-    let queryStr = JSON.stringify(reqQuery)
-
-    // Create operators ($gt, $gte, etc)
-    queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`) //Transform query operators into actual operators so Mongo can understand the query
-    
-    //Finding resources
-    query = Book.find(JSON.parse(queryStr))
-
-
-    //Select fields ---> Projection
-    if (req.query.select){
-        const fields = req.query.select.split(',').join(' ')
-        query = query.select(fields) //project
-    }
-
-    // Sort ---> Sort
-    if (req.query.sort){
-        const sortBy = req.query.sort.split(',').join(' ')
-        query = query.sort(sortBy)
-    }else{
-        query = query.sort('-createdAt')
-    }
-    // Pagination
-    const page = parseInt(req.query.page, 10) || 1
-    const limit = parseInt(req.query.limit, 10) || 20
-    const startIndex = (page -1)*limit
-    const endIndex = page * limit
-    const total = await Book.countDocuments()
-
-    query = query.skip(startIndex).limit(limit)//MongoQuery Limit and skip
-    //Executing query
-    const books = await query
-
-    //Pagination result
-    const pagination = {}
-    if(endIndex < total){
-        pagination.next = {
-            page: page+1,
-            limit
-        }
-    }
-    if (startIndex>0){
-        pagination.prev = {
-            page: page-1,
-            limit
-        }
-    }
-    res.status(200).json({succes: true, count: books.length, pagination, data: books})
+    res.status(200).json(res.advancedResults)
 })
 
 // @desc    Get single book

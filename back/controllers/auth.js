@@ -2,7 +2,6 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middlewares/async')
 const {User} = require('../models/User')
-const {  mongoose } = require('mongoose')
 const sendEmail = require('../utils/sendEmail')
 const crypto = require('crypto');
 
