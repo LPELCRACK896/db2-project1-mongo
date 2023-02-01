@@ -14,6 +14,17 @@ function Iniciacion(onCurrentPage) {
     const changeAuthMode = () => {
       setAuthMode(authMode === "signin" ? "signup" : "signin")
     }
+
+    const Checkbox = ({ label }) => {
+        return (
+          <div className="checkbox-wrapper">
+            <label>
+              <input type="checkbox" />
+              <span>{label}</span>
+            </label>
+          </div>
+        );
+      };
   
     if (authMode === "signin") {
       return (
@@ -43,6 +54,7 @@ function Iniciacion(onCurrentPage) {
                   className="form-control mt-1"
                   placeholder="Enter password"
                 />
+                
               </div>
               <div className="d-grid gap-2 mt-3">
                 <button type="submit" className="btn btn-primary">
@@ -90,15 +102,22 @@ function Iniciacion(onCurrentPage) {
                 className="form-control mt-1"
                 placeholder="Password"
               />
+
+            <div>
+                <p></p>
+            <label>Are you a...?</label>
+            <Checkbox label="Publisher" />
+            <Checkbox label="Reviewer" />
+            <Checkbox label="Reader" />
+            </div>
+
             </div>
             <div className="d-grid gap-2 mt-3">
               <button type="submit" className="btn btn-primary">
                 Submit
               </button>
             </div>
-            <p className="text-center mt-2">
-              Forgot <a href="#">password?</a>
-            </p>
+            
           </div>
         </form>
       </div>
