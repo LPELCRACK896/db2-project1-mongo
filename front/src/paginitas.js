@@ -9,6 +9,7 @@ export const Home = () => {
   return (
     <div>
         <img src={Girl} alt="Girl reading " className="personita"/>
+        <p className="user">Hi! Puppy Cat!</p>
         <h2>Books Bee Books</h2>
         <nav className="Navegador">
         <Link to="/login" color="white">Log in</Link> | <Link to="/buscar">Buscar</Link>
@@ -37,6 +38,7 @@ export const Search = () => {
   return (
     <div>
         <img src={Girl} alt="Girl reading " className="personita"/>
+        <p className="user">Hi! Puppy Cat!</p>
         <h2>Books Bee Books</h2>
     <nav className="Navegador">
         <Link to="/">Inicio</Link> | <Link to="/login">Log in</Link>
