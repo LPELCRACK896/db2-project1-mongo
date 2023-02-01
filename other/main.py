@@ -1,7 +1,8 @@
 from data_generator import *
 from books import *
+from reviews import *
 from pymongo import MongoClient
-from constants import MONGO_URI, AUTHORS_COLLECTION, DB_NAME, BOOKS_COLLECTION, CSV_AUTH_FILENAME, CSV_PUBLISHERS_FILENAME, USERS_COLLECTION
+from constants import MONGO_URI, AUTHORS_COLLECTION, DB_NAME, BOOKS_COLLECTION, USERS_COLLECTION, REVIEWS_COLLECTION
 
 # Variables
 total_authors = 20
@@ -17,20 +18,24 @@ books_cl = client[DB_NAME][BOOKS_COLLECTION]
 books_cl.drop()
 users_cl = client[DB_NAME][USERS_COLLECTION]
 users_cl.drop()
+reviews_cl = client[DB_NAME][REVIEWS_COLLECTION]
+reviews_cl.drop()
 
 # Generation and insert
 #Gen: Users publishers
-publishers_gen(CSV_PUBLISHERS_FILENAME, total_users)
-csv_to_mongo(CSV_PUBLISHERS_FILENAME, USERS_COLLECTION, DB_NAME, MONGO_URI)
-mongo_back_to_csv(CSV_PUBLISHERS_FILENAME, USERS_COLLECTION, DB_NAME, MONGO_URI)
+publishers_df = user_generator(total_users, role="publisher")
+user_post(publishers_df)
+publishers_df = mongo_to_df(USERS_COLLECTION, DB_NAME, MONGO_URI)
 
 #Gen: Authors
-authors_gen(CSV_AUTH_FILENAME, total_authors)
-csv_to_mongo(CSV_AUTH_FILENAME, AUTHORS_COLLECTION, DB_NAME, MONGO_URI)
-mongo_back_to_csv(CSV_AUTH_FILENAME, AUTHORS_COLLECTION, DB_NAME, MONGO_URI)
+df_authors = authors_gen(total_authors)
+df_to_mongo(df_authors, AUTHORS_COLLECTION, DB_NAME, MONGO_URI)
+df_authors = mongo_to_df(AUTHORS_COLLECTION, DB_NAME, MONGO_URI)
 
 #Post books
-book_post(CSV_AUTH_FILENAME, CSV_PUBLISHERS_FILENAME, total_books)
+book_post(df_authors, publishers_df, total_books)
 
-
-
+#Reviewers generator
+reviewers_df = user_generator(total_users, role="reviewer")
+user_post(reviewers_df)
+review_post(mongo_to_df(BOOKS_COLLECTION, DB_NAME, MONGO_URI))
