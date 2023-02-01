@@ -6,7 +6,7 @@ const {
     forgotPassword, 
     resetPassword
 } = require('../controllers/auth')
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 const {protect} = require('../middlewares/auth')
 
 router.route('/register').post(register)

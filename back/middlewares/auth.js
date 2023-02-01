@@ -7,7 +7,6 @@ const {User} = require('../models/User')
 
 exports.protect = asyncHandler(async(req, res, next)=>{
     let token
-
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         token = req.headers.authorization.split(' ')[1]
         
@@ -23,6 +22,7 @@ exports.protect = asyncHandler(async(req, res, next)=>{
         //Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         req.user = await User.findById(decoded.id)
+        if(!req.user) return next(new ErrorResponse('Unvalid token ', 400))
         next()
     }catch(err){
         return  next(new ErrorResponse('Error on server', 500))

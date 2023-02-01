@@ -33,6 +33,7 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
 // @route   GET /api/v1/books/:id
 // @access   Public
 exports.getBook = asyncHandler(async (req, res, next)=>{
+    console.log(req.params)
     const id = mongoose.Types.ObjectId(req.params.id)
     const book = await Book.aggregate([
         {$match: {_id: id}}, 
@@ -46,7 +47,7 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
             rate: {$divide: ["$rate", "$timesRated"]}
         }}
     ])
-    if (book) return res.status(200).json({succes: true, book: book[0]})
+    if (book.length!==0) return res.status(200).json({succes: true, book: book[0]})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
 

@@ -21,7 +21,6 @@ const ReviewSchema = new Schema({
         type: Date, 
         default: Date.now
     },
-    timesRated: {type: Number, default: 1},
     user: { 
         type: mongoose.Schema.ObjectId,
         ref: 'User',
@@ -33,6 +32,8 @@ const ReviewSchema = new Schema({
         required: true
     }
 });
+//Only one review per user
+ReviewSchema.index({book: 1, user: 1}, {unique: true})
 
 const Review = mongoose.model('Review', ReviewSchema)
 

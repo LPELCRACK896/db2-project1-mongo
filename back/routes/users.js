@@ -12,7 +12,7 @@ const {
     updateUser
 } = require('../controllers/users')
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 //Protect all routes
 router.use(protect)
 router.use(authorize('admin'))
