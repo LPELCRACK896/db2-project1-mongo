@@ -3,12 +3,16 @@ import Inicio from "./Inicio";
 import Iniciacion from "./login";
 import Buscador from "./search"
 import "./App.css"
+import Girl from './iconocito.png'
 
 export const Home = () => {
   return (
     <div>
+        <img src={Girl} alt="Girl reading " className="personita"/>
+        <h2>Books Bee Books</h2>
         <nav className="Navegador">
         <Link to="/login" color="white">Log in</Link> | <Link to="/buscar">Buscar</Link>
+        
       </nav>
       <Inicio/>
       
@@ -19,6 +23,8 @@ export const Home = () => {
 export const Logins = () => {
   return (
     <div>
+        <img src={Girl} alt="Girl reading " className="personita"/>
+        <h2>Books Bee Books</h2>
     <nav className="Navegador">
         <Link to="/">Inicio</Link> | <Link to="/buscar">Buscar</Link>
       </nav>
@@ -30,6 +36,8 @@ export const Logins = () => {
 export const Search = () => {
   return (
     <div>
+        <img src={Girl} alt="Girl reading " className="personita"/>
+        <h2>Books Bee Books</h2>
     <nav className="Navegador">
         <Link to="/">Inicio</Link> | <Link to="/login">Log in</Link>
       </nav>

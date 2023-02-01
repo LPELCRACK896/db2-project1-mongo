@@ -5,7 +5,7 @@ import React from 'react';
 import {useState} from 'react';
 // import Button from 'react-bootstrap/Button';
 import ATSAT from './ATSAT.jpg'
-
+import "./App.css"
 
 
 function Cards(){
