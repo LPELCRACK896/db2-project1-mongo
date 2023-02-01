@@ -22,11 +22,6 @@ function Inicio() {
   return (  
     <>
     
-
-
-    
-
-{/* las cards */}
       <Cards></Cards>
     
     </>

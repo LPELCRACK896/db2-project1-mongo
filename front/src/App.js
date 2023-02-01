@@ -15,7 +15,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 import Iniciacion from './login';
 
-import { Logins,Bar,Home,BarWithID } from './paginitas';
+import { Logins,Search,Home,BarWithID } from './paginitas';
 
 const rootElement = document.getElementById("root");
 
@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Logins />} />
-        <Route path="bar" element={<Bar />} />
+        <Route path="/buscar" element={<Search />} />
         <Route path="bar/:id" element={<BarWithID />} />
       </Routes>
     </BrowserRouter>,

@@ -63,3 +63,17 @@ label {
   margin: 5px;
 
 }
+
+.Navegador{
+  background-color:#282c34;
+  margin: 20px;
+  color: aliceblue;
+}
+
+.Inicio{
+  background-color: #282c34;
+}
+
+a:link{
+  color: aliceblue;
+}
