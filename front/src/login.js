@@ -8,23 +8,25 @@ import {useState} from 'react';
 
 
   
-function Iniciacion(onCurrentPage) {
+function Iniciacion() {
     let [authMode, setAuthMode] = useState("signin")
+
+
+      
+
+
   
     const changeAuthMode = () => {
       setAuthMode(authMode === "signin" ? "signup" : "signin")
     }
-
-    const Checkbox = ({ label }) => {
-        return (
-          <div className="checkbox-wrapper">
-            <label>
-              <input type="checkbox" />
-              <span>{label}</span>
-            </label>
-          </div>
-        );
-      };
+function verificador(){
+    ("input:checkbox").click(function () {
+        var bol = ("input:checkbox:checked").length >= 1;
+        ("input:checkbox").not(":checked").attr("disabled", bol);
+      });
+}
+    
+      
   
     if (authMode === "signin") {
       return (
@@ -103,13 +105,20 @@ function Iniciacion(onCurrentPage) {
                 placeholder="Password"
               />
 
+
+
             <div>
                 <p></p>
             <label>Are you a...?</label>
-            <Checkbox label="Publisher" />
-            <Checkbox label="Reviewer" />
-            <Checkbox label="Reader" />
+            <div id="checkboxgroup">
+	            <input type="checkbox" className="cajitas" />Publisher 
+	            <input type="checkbox" className="cajitas" />Reader 
+	            <input type="checkbox" className="cajitas" />Reviewer 
             </div>
+            
+            </div>
+
+
 
             </div>
             <div className="d-grid gap-2 mt-3">
