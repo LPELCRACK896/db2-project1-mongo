@@ -7,15 +7,15 @@ import {useState} from 'react';
 import ATSAT from './ATSAT.jpg'
 import "./App.css"
 import Booksa from './llamadera';
+import { BookInfo } from './paginitas';
+import { Link, useParams } from "react-router-dom";
 
 function Cards(){
 
     const [ButtonText, setButtonText] = useState('Agregar a lista de favoritos');
 
   
-    const asignacion = (id_child) => {
-      setButtonText("Agregado")
-    }
+   
 /*   function handleClick() {
     
     setButtonText('Agregado');
@@ -35,7 +35,8 @@ function Cards(){
         <Card.Text>
           RAting
         </Card.Text>
-        <button className="agrega" onClick={() => asignacion()}>{ButtonText}</button>
+        <button className="agrega" onClick={<BookInfo/>}>Mas informacion</button>
+        <Link to="/book">Mas informacion</Link>
         {/* <button onClick={handleClick2}>{ButtonText}</button> */}
       </Card.Body>
     </Card>
@@ -50,7 +51,7 @@ function Cards(){
         <Card.Text>
           RAting
         </Card.Text>
-        <button className="agrega" onClick={() => asignacion()}>{ButtonText}</button>
+        <button className="agrega">{ButtonText}</button>
       </Card.Body>
     </Card>
 

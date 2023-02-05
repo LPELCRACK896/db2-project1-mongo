@@ -1,8 +1,10 @@
+import "./App.css"
+
 function Buscador(){
     return(
     <>
         <h3>Buscar</h3>
-        <input></input>
+        <input className="Buscador"></input>
 </>
     );
 }

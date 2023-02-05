@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import Inicio from "./Inicio";
 import Iniciacion from "./login";
 import Buscador from "./search"
+import InfoBooks from "./InfoLibro";
 import "./App.css"
 import Girl from './iconocito.png'
 
@@ -51,11 +52,15 @@ export const Search = () => {
 
 
 
-export const BarWithID = () => {
-  const params = useParams();
+export const BookInfo = () => {
   return (
-    <div>
-      <h2>Bar with ID: {params.id}</h2>
+    <div><img src={Girl} alt="Girl reading " className="personita"/>
+    <p className="user">Hi! Puppy Cat!</p>
+    <h2>Books Bee Books</h2>
+<nav className="Navegador">
+    <Link to="/">Inicio</Link> | <Link to="/login">Log in</Link>
+  </nav>
+      <InfoBooks/>
     </div>
   );
 };

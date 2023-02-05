@@ -83,6 +83,10 @@ a:link{
   font-size: 20px;
 }
 
+a{
+  color: aliceblue;
+}
+
 * {background-color: #282c34}
 
 .personita{
@@ -98,6 +102,7 @@ h2{
 }
 
 h3{
+  text-align: center;
   color: aliceblue;
 }
 .user{
@@ -113,4 +118,11 @@ h3{
 
 p{
   color: aliceblue;
+}
+
+input{
+  color: aliceblue;
+  align-self: center;
+  display: grid;
+  margin: auto;
 }

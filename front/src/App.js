@@ -1,14 +1,10 @@
 
 import { render } from "react-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import Card from 'react-bootstrap/Card';
 import './App.css';
 import React from 'react';
-// import {useState} from 'react'
-// import Button from 'react-bootstrap/Button';
-// import ATSAT from './ATSAT.jpg'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Logins,Search,Home,BarWithID } from './paginitas';
+import { Logins,Search,Home,BookInfo } from './paginitas';
 
 const rootElement = document.getElementById("root");
 
@@ -20,7 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Logins />} />
         <Route path="/buscar" element={<Search />} />
-        <Route path="bar/:id" element={<BarWithID />} />
+        <Route path="/book" element={<BookInfo />} />
       </Routes>
     </BrowserRouter>,
   rootElement
