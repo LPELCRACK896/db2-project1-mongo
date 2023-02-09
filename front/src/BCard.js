@@ -22,7 +22,7 @@ const BCard = (props) => {
       <Card.Text>
         {rate}/10
       </Card.Text>
-      <button className="agrega">{ButtonText}</button>
+      {/* <button className="agrega">{ButtonText}</button> */}
       <Link to="/book">Mas informacion</Link>
 
       {/* <button onClick={handleClick2}>{ButtonText}</button> */}

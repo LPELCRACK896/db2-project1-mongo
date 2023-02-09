@@ -71,7 +71,7 @@ function Iniciacion() {
       const errsHtml = res.err?`<ul>${res.error.split(",").map(err => `<li>${err}</li>`).toString()}</ul>`:"Unexpected error"
       Swal.fire({
         icon: "error",
-        title: "Couldnt register user",
+        title: "No se encontro al usuario",
         html: errsHtml
       })
       return
@@ -105,7 +105,7 @@ function Iniciacion() {
       Swal.fire({
         icon: 'warning',
         title: 'Contraseña invalida',
-        text: 'La contraseña debe tener un mimod de 6 caracteres',
+        text: 'La contraseña debe tener un mimo de 6 caracteres',
       })
       return
     }
@@ -123,17 +123,17 @@ function Iniciacion() {
       referrerPolicy: 'no-referrer',
     }).then( res => res.json())
     if (!res.success){
-      const errsHtml = res.err?`<ul>${res.error.split(",").map(err => `<li>${err}</li>`).toString()}</ul>`:"Unexpected error"
+      const errsHtml = res.err?`<ul>${res.error.split(",").map(err => `<li>${err}</li>`).toString()}</ul>`:"Error"
       Swal.fire({
         icon: "error",
-        title: "Couldnt register user",
+        title: "No se pudo registrar al usuaro, vuelve a intentarlo",
         html: errsHtml
       })
       return
     }
     Swal.fire({
       icon: "success",
-      title: "Succesfully register user"
+      title: "Usuario registrado"
     })
   }
     

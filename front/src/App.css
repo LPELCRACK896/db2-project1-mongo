@@ -134,3 +134,24 @@ input:invalid::after{
 input:invalid:focus {
   background-image: black;
 }
+
+.Buscador{
+  color: aliceblue;
+  align-self: center;
+  display: grid;
+  margin: auto;
+}
+
+.swal2-html-container{
+  color: aliceblue;
+  background-color: #282c34;
+}
+
+.swal2-x-mark{
+  background-color: rgba(240, 230, 140, 0);
+}
+
+.swal2-container.swal2-center>.swal2-popup{
+  background-color: #282c34;
+  color: aliceblue;
+}
