@@ -123,6 +123,14 @@ p{
 input{
   color: aliceblue;
   align-self: center;
-  display: grid;
-  margin: auto;
+  margin: 5px 10px;
+}
+input:invalid {
+  border: 2px solid red;
+}
+input:invalid::after{
+  content: "Contraseña debe tener por lo menos 6 caracteres";
+}
+input:invalid:focus {
+  background-image: black;
 }
