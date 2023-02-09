@@ -5,7 +5,7 @@ const colors =  require('colors')
 const connectDB = require('./config/db')
 const errorHandler = require('./middlewares/error')
 const cookieParser = require('cookie-parser');
-
+const cors = require('cors')
 //Load env vars
 dotenv.config({ path: './config/config.env' })
 // Connect to DB
@@ -19,6 +19,20 @@ const users = require('./routes/users')
 const reviews = require('./routes/reviews')
 
 const app = express()
+
+//Cors config https://www.codingdeft.com/posts/nodejs-react-cors-error/
+const whitelist = ["http://localhost:3000"]
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
+  credentials: true,
+}
+app.use(cors(corsOptions))
 
 //Body Parser
 app.use(express.json()) //Sin esta linea, los controladores no acceden al req.body
