@@ -1,61 +1,50 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card';
 import './App.css';
-import React from 'react';
-import {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 // import Button from 'react-bootstrap/Button';
 import ATSAT from './ATSAT.jpg'
 import "./App.css"
-import Booksa from './llamadera';
 import { BookInfo } from './paginitas';
 import { Link, useParams } from "react-router-dom";
+import BCard from './BCard'
 
-function Cards(){
+const Cards = () =>{
 
-    const [ButtonText, setButtonText] = useState('Agregar a lista de favoritos');
+    const [books, setBooks] = useState([])
+    const [pagination, setPagination] = useState({
+      actual: {page: 1, limit: 25}, 
+      prev: null, 
+      next: null
+    })
+    const [isLoading, setIsLoading] = useState(false)
+    const [booksPerPage, setBooksPerPage] = useState(25)
+    const fetchData = async (page) => {
 
-  
+    const booksFetch = await 
+        fetch(`http://localhost:5000/api/v1/books?page=${page}`, { method: 'GET', mode: 'cors', headers: {'Content-Type': 'application/json',}, referrerPolicy: 'no-referrer', })
+        .then(response => response.json())
+        setBooks(booksFetch.data)
+        setPagination(booksFetch.pagination)
+    }
+    useEffect( ()=>{
+      setIsLoading(true)
+      fetchData(pagination.actual.page)
+      setIsLoading(false)
+      console.log(books)
+    }, [])
    
-/*   function handleClick() {
-    
-    setButtonText('Agregado');
-    // setButtonText('Agregar a lista de favoritos');
-  } */
+
 
         return(
             <>
-            <Booksa></Booksa>
-            <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={ATSAT} />
-      <Card.Body>
-        <Card.Title>Nombre del libro</Card.Title>
-        <Card.Text>
-          descripcion del libro
-        </Card.Text>
-        <Card.Text>
-          RAting
-        </Card.Text>
-        <button className="agrega" onClick={<BookInfo/>}>Mas informacion</button>
-        <Link to="/book">Mas informacion</Link>
-        {/* <button onClick={handleClick2}>{ButtonText}</button> */}
-      </Card.Body>
-    </Card>
-
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={ATSAT} />
-      <Card.Body>
-        <Card.Title>Nombre del libro</Card.Title>
-        <Card.Text>
-          descripcion del libro
-        </Card.Text>
-        <Card.Text>
-          RAting
-        </Card.Text>
-        <button className="agrega">{ButtonText}</button>
-      </Card.Body>
-    </Card>
-
-    </>
+            {books&&
+            books.map(book=>(
+              <BCard bookJson = {book} /> 
+            ))
+              
+            }
+            </>
         );
 
 
