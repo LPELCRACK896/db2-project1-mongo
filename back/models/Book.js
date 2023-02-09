@@ -59,6 +59,11 @@ const BookSchema = new Schema({
         ref: 'User',
         required: [true, "Must indicate user publisher"]
 
+    }, 
+    reviewerRate: {
+        type: Number,
+        min: [1, 'Rating must be at least 1'],
+        max: [10, 'Rating must can not be more than 10']
     }
 });
 

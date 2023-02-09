@@ -33,7 +33,47 @@ const ReviewSchema = new Schema({
     }
 });
 //Only one review per user
-ReviewSchema.index({book: 1, user: 1}, {unique: true})
+ReviewSchema.index({  user: 1, book: 1 }, { unique: true });
+
+// Static method to get avg rating and save
+ReviewSchema.statics.getAverageRating = async function(bookId) {
+    const obj = await this.aggregate([
+      {
+        $match: { book: bookId }
+      },
+      {
+        $group: {
+          _id: '$book',
+          averageRating: { $avg: '$rating' }
+        }
+      }
+    ]);
+  
+   try {
+      if (obj[0]) {
+        await this.model("Book").findByIdAndUpdate(bookId, {
+            reviewerRate: obj[0].averageRating.toFixed(1),
+        });
+      } else {
+        await this.model("Book").findByIdAndUpdate(bookId, {
+            reviewerRate: undefined,
+        });
+      }
+    }  catch (err) {
+      console.error(err);
+    }
+  };
+
+// Call getAverageCost after save
+ReviewSchema.post('save', async function() {
+    await this.constructor.getAverageRating(this.book);
+});
+  
+  // Call getAverageCost before remove
+ReviewSchema.post('remove', async function() {
+    await this.constructor.getAverageRating(this.book);
+});
+
 
 const Review = mongoose.model('Review', ReviewSchema)
 

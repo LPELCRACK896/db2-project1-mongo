@@ -12,7 +12,6 @@ const {Review} = require('../models/Review')
 // @access Public
 exports.getReviews = asyncHandler(async (req, res, next)=>{
 
-    console.log(req.params.bookid)
     if(req.params.bookid){
         const reviews = await Review.find({book: req.params.bookId})
         
@@ -29,7 +28,6 @@ exports.getReviews = asyncHandler(async (req, res, next)=>{
 // @route GET /api/v1/reviews/:id
 // @access Public
 exports.getReview = asyncHandler(async (req, res, next)=>{
-    console.log(req.params.id)
     const review = await Review.findById(req.params.id).populate({
         path: 'book',//Join
         select: 'title author' //fields shown
@@ -43,7 +41,6 @@ exports.getReview = asyncHandler(async (req, res, next)=>{
 // @route  Post /api/v1/books/:bookId/reviews
 // @access Private
 exports.addReview = asyncHandler(async (req, res, next)=>{
-    console.log(req)
     req.body.book = req.params.bookid
     req.body.user = req.user.id
     const book = Book.findById(req.body.book)
