@@ -56,16 +56,15 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
 // @route GET /api/v1/books/:id
 // @access Private
 exports.deleteBook = asyncHandler(async(req, res, next)=>{
-    let book = await Book.findById(req.params.id)
+    const book = await Book.findById(req.params.id)
     if (!book) next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
     let author = await Author.findByIdAndUpdate(book.author.auth_id, {$pull: {books: {_id: book._id}}}, {new: true})
     //Make sure user is the book owner
     if(book.publisher.toString() !== req.user.id && req.user.role !=='admin'){
         return next(new ErrorResponse(`User ${req.user.username} unauthorized`, 401))
     }
-    book = await Book.findByIdAndDelete(req.params.id)
-    if (book) return res.status(200).json({succes: true, author})
-    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+    await book.remove()
+    return res.status(200).json({succes: true, author})
 })
 
 // @desc Update one book
@@ -78,7 +77,7 @@ exports.updateBook = asyncHandler(async(req, res, next)=>{
     if(book.publisher.toString() !== req.user.id && req.user.role !=='admin'){
         return next(new ErrorResponse(`User ${req.user.username} unauthorized`, 401))
     }
-    book = await Book.findOneAndDelete(req.params.id, req.body, {
+    book = await Book.findOneAndUpdate(req.params.id, req.body, {
         new: true, 
         runValidators: true
     })

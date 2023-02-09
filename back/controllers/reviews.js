@@ -43,10 +43,48 @@ exports.getReview = asyncHandler(async (req, res, next)=>{
 exports.addReview = asyncHandler(async (req, res, next)=>{
     req.body.book = req.params.bookid
     req.body.user = req.user.id
-    const book = Book.findById(req.body.book)
+    const book = await Book.findById(req.body.book)
     if (!book) return next(new ErrorResponse("No book related to that id: "+req.body.book, 404))
 
     const review = await Review.create(req.body)
 
     res.status(200).json({success: true, data: review})
+})
+
+// @desc   Delete a review
+// @route  Delete /api/v1/reviews/:id
+// @access Private
+exports.deleteReview = asyncHandler(async (req, res, next)=>{
+    req.body.user = req.user.id
+    const review = await Review.findById(req.params.id)
+    
+    if (!review) return next(new ErrorResponse("No review related to that id: "+req.params.id, 404))
+
+    if(review.user.toString() !== req.user.id && req.user.role !=='admin'){
+        return next(new ErrorResponse(`User ${req.user.username} unauthorized`, 401))
+    }
+    await review.remove()
+    if (review) return res.status(200).json({succes: true, data: {}})
+})
+
+
+// @desc Update one review
+// @route PUT /api/v1/reviews/:id
+// @access Private
+exports.updateReview = asyncHandler(async(req, res, next)=>{
+    req.body.user = req.user.id
+    let review = await Review.findById(req.params.id)
+
+    if (!review) return next(new ErrorResponse("No review related to that id: "+req.params.id, 404))
+
+    if(review.user.toString() !== req.user.id && req.user.role !=='admin'){
+        return next(new ErrorResponse(`User ${req.user.username} unauthorized`, 401))
+    }
+    review = await Review.findOneAndUpdate(req.params.id, req.body, {
+        new: true, 
+        runValidators: true
+    })
+    
+    if (review) return res.status(200).json({succes: true, data: review})
+    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
