@@ -5,8 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
 import {useState} from 'react';
 import Swal from 'sweetalert2';
-
-
+import axios from 'axios';
+import {useHistory } from 'react-router-dom'
 
   
 function Iniciacion() {
@@ -55,18 +55,11 @@ function Iniciacion() {
       })
       return
     }
-    const res = await fetch("http://localhost:5000/api/v1/auth/login", {
-      method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify({
+    const res = await axios.post("http://localhost:5000/api/v1/auth/login", 
+      {
         email,
         password
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      referrerPolicy: 'no-referrer',
-    }).then( res => res.json())    
+      }).then(res => res.data)
     if (!res.success){
       const errsHtml = res.err?`<ul>${res.error.split(",").map(err => `<li>${err}</li>`).toString()}</ul>`:"Unexpected error"
       Swal.fire({
@@ -76,9 +69,10 @@ function Iniciacion() {
       })
       return
     }
+    localStorage.setItem("token", res.token)
     Swal.fire({
       icon: "success",
-      title: "Succesfully register user"
+      title: "Usuario loggeado con éxito"
     })
   }
 
@@ -105,23 +99,17 @@ function Iniciacion() {
       Swal.fire({
         icon: 'warning',
         title: 'Contraseña invalida',
-        text: 'La contraseña debe tener un mimo de 6 caracteres',
+        text: 'La contraseña debe tener un minimo de 6 caracteres',
       })
       return
     }
-    const res = await fetch("http://localhost:5000/api/v1/auth/register", {
-      method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify({
+    const res = await axios.post("http://localhost:5000/api/v1/auth/register", 
+      {
         username: name,
         email,
         password
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      referrerPolicy: 'no-referrer',
-    }).then( res => res.json())
+      }
+    ).then( res => res.data)
     if (!res.success){
       const errsHtml = res.err?`<ul>${res.error.split(",").map(err => `<li>${err}</li>`).toString()}</ul>`:"Error"
       Swal.fire({
@@ -131,12 +119,12 @@ function Iniciacion() {
       })
       return
     }
+    localStorage.setItem("token", res.token)
     Swal.fire({
       icon: "success",
       title: "Usuario registrado"
     })
   }
-    
 
   if (authMode === "signin") {
     return (
@@ -250,7 +238,7 @@ function Iniciacion() {
                 Submit
               </button>
             </div>
-            
+
           </div>
         </form>
       </div>
