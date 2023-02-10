@@ -118,3 +118,35 @@ exports.newRate = asyncHandler(async(req, res, next)=>{
 
 
 })
+
+exports.findBook = asyncHandler(async(req, res, next)=>{
+    const { keyword } = req.body
+    let { limit, page } = req.body
+
+    const endIndex = page*limit
+    const startIndex = (page-1)*limit
+    const pagination = {}
+    
+    const books =  await Book.find({ $or: [{ title: { $regex: keyword, $options: "i" } }, { "author.name": { $regex: keyword, $options: "i" } }] }).skip(startIndex).limit(limit)
+    const count = await Book.countDocuments({ $or: [{ title: { $regex: keyword, $options: "i" } }, { "author.name": { $regex: keyword, $options: "i" } }] })
+    
+    if (endIndex<count){
+        pagination.next = {
+            page: page+1,
+            limit
+        }
+    }else{
+        pagination.next = null
+    }
+    if (startIndex>0){
+        pagination.prev = {
+            page: page-1,
+            limit
+        }
+    }else{
+        pagination.prev = null
+    }
+
+
+    return res.status(200).json({success: true, data: books, pagination})
+})

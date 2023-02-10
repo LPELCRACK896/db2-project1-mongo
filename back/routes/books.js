@@ -5,7 +5,8 @@ const {
     getBook,
     deleteBook, 
     updateBook, 
-    newRate
+    newRate,
+    findBook
 } = require('../controllers/books');
 const advancedResults = require('../middlewares/advancedResults')
 const {Book} = require('../models/Book')
@@ -22,4 +23,5 @@ router.use('/:bookid/reviews', reviewsRoute)
 router.route('/').post(createBook).get(advancedResults(Book), getBooks)//protect, authorize('publisher', 'admin'),
 router.route('/:id').get(getBook).put(protect, authorize('publisher', 'admin'), updateBook).delete(protect, authorize('publisher', 'admin'), deleteBook)
 router.route('/rate/:id').put(protect, newRate)
+router.route("/findbook").post(findBook)
 module.exports = router
