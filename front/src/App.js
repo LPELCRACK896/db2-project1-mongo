@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { Logins,Search,Home,BookInfo, UserSeatch, Perfil } from './paginitas';
+import { Logins,Search,Home,BookInfo, UserSeatch, Perfil, Fomulario } from './paginitas';
 
 const rootElement = document.getElementById("root");
 
@@ -19,6 +19,7 @@ function App() {
         <Route path="/book" element={<BookInfo />} />
         <Route path="/usuarios" element={<UserSeatch />} />
         <Route path="/profile" element={<Perfil />} />
+        <Route path="/newbook" element={<Fomulario />} />
       </Routes>
     </BrowserRouter>,
   rootElement

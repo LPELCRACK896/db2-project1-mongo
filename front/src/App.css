@@ -232,3 +232,19 @@ Option{
 }
 
 
+.Entra{
+  margin: 30px;
+  display: inline-grid;
+}
+
+.Adicion{
+  border-radius: 25%;
+  margin-top: 40px;
+  margin-right: 20px;
+  padding: 20px;
+    width: 250px;
+    float: right;
+    font-size: 20px;
+    background-color: #fde55ada;
+    border: 5px solid #fde55a6e;
+}

@@ -4,6 +4,7 @@ import Iniciacion from "./login";
 import Buscador from "./search"
 import InfoBooks from "./InfoLibro";
 import Profile from "./profile";
+import Form from "./Bookform";
 import "./App.css"
 import logo from './Logo.png'
 import {useState, useEffect} from 'react';
@@ -198,7 +199,7 @@ export const Perfil = () =>{
     <div>
       <header className="Cabeza">
     <img src={logo} alt="bee pattern " className="bee"/>
-    
+    <p className="user" ><Link  className="user" to="/newbook">Add book</Link></p>
     <h2 className="comp">Books Bee Books</h2>
 
     <Link className="linkcito" to="/">Inicio</Link> | <Link className="linkcito" to="/buscar">Buscar libros</Link>
@@ -208,5 +209,23 @@ export const Perfil = () =>{
       <Profile/>
     </div>
 
+  )
+}
+
+export const Fomulario =()=>{
+  return(
+    <div>
+    <header className="Cabeza">
+    <img src={logo} alt="bee pattern " className="bee"/>
+    
+    <h2 className="comp">Books Bee Books</h2>
+
+    <Link className="linkcito" to="/">Inicio</Link> 
+    <nav>
+
+    </nav>
+    </header>
+    <Form/>
+    </div>
   )
 }
