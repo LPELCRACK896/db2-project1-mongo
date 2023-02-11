@@ -4,16 +4,20 @@
 }
 
 .card{
-    margin: 10px;
+  margin: 20px;
   display: inline-grid;
-  color: 'black';
-  width: 100px;
+  align-self: center;
+  justify-self: center;
+  align-content: space-between;
+  justify-content: space-around;
+  background-color: #282c34;
 }
 
-/* .card-body{
-  padding: 100px;
-} */
-
+.rating{
+  text-align: center;
+  font-weight: bolder;
+  font-size: large;
+}
 
 .Auth-form-container {
   display: flex;
@@ -33,7 +37,7 @@
 }
 
 .Auth-form-content {
-  color: 'black';
+  color: #282c34;
   padding-left: 12%;
   padding-right: 12%;
 }
@@ -42,14 +46,14 @@
   text-align: center;
   margin-bottom: 1em;
   font-size: 24px;
-  color: 'black';
+  color: #282c34;
   font-weight: 800;
 }
 
 label {
   font-size: 14px;
   font-weight: 600;
-  color: 'black';
+  color: #282c34;
 }
 
 .buscar{
@@ -102,9 +106,10 @@ h3{
   color: 'black';
   
 }
-.user{
+a.user{
   background-color: #282c34;
   float: right;
+  margin-right: 10px;
   margin-top: -10px;
   padding-bottom: 21px;
   padding-top: 21px; 
@@ -124,7 +129,7 @@ h3{
 
 .Cabeza{
   background-color: #f9d244;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   padding-top: 20px;
   padding-bottom: 30px;
 }
@@ -151,6 +156,10 @@ input:invalid:focus {
   background-image: black;
 }
 
+.Auth-form{
+  background-color:#fffb95 ; 
+}
+
 .Buscador{
   color: 'black';
   align-self: center;
@@ -160,7 +169,7 @@ input:invalid:focus {
 
 .swal2-html-container{
   color: 'black';
-  background-color: #282c34;
+  background-color: #fffb95;
 }
 
 .swal2-x-mark{
@@ -168,7 +177,7 @@ input:invalid:focus {
 }
 
 .swal2-container.swal2-center>.swal2-popup{
-  background-color: #282c34;
+  background-color: #fffb95;
   color: 'black';
 }
 

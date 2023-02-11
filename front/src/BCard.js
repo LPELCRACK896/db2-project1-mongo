@@ -5,18 +5,20 @@ import { Link, useParams } from "react-router-dom";
 
 const BCard = (props) => {
 
-  const {title, desc, rate, category } = props.bookJson
+  const {title, desc, rate, category, reviewerRate } = props.bookJson
 
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '25rem'}}>
     <Card.Img variant="top" src={ATSAT} />
     <Card.Body>
       <Card.Title>{title}</Card.Title>
       <Card.Text>
         {desc}
       </Card.Text>
-      <Card.Text>
-        {rate}/10
+      <Card.Text className='rating'>
+       User rating: {rate}/10
+       <br></br>
+       Reviewer rating: {reviewerRate}/10
       </Card.Text>
       <Card.Text>
         Autor: 
@@ -26,7 +28,7 @@ const BCard = (props) => {
       </Card.Text>
 
       {/* <button className="agrega">{ButtonText}</button> */}
-      <Link to="/book">Mas informacion</Link>
+      <Link className="masinfo" to="/book">Mas informacion</Link>
 
      <Card.Text>
         Agregado por: 
