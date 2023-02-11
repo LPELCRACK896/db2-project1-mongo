@@ -182,7 +182,17 @@ input:invalid:focus {
 }
 
 .prev{
-  padding: 50px;
+  float: left;
+  padding-left: 25px;
+  padding-right:25px;
+  font-size: 30px;
+}
+
+.next{
+  float: right;
+  padding-left: 25px;
+  padding-right:25px;
+  font-size: 30px;
 }
 
 .Navegacion{

@@ -30,7 +30,7 @@ function Buscador(){
     }
     return(
     <>
-        <h3>Buscar</h3>
+        <h3>Buscar libros</h3>
         <input className="Buscador" name="finder" onChange={search}></input>
         <>
         {books&&
