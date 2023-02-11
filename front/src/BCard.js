@@ -4,13 +4,9 @@ import ATSAT from './ATSAT.jpg'
 import { Link, useParams } from "react-router-dom";
 
 const BCard = (props) => {
-  const [ButtonText, setButtonText] = useState('Agregar a lista de favoritos');
-  const {title, desc, rate } = props.bookJson
-  /*   function handleClick() {
-    
-    setButtonText('Agregado');
-    // setButtonText('Agregar a lista de favoritos');
-  } */
+
+  const {title, desc, rate, category } = props.bookJson
+
   return (
     <Card style={{ width: '18rem' }}>
     <Card.Img variant="top" src={ATSAT} />
@@ -22,10 +18,19 @@ const BCard = (props) => {
       <Card.Text>
         {rate}/10
       </Card.Text>
+      <Card.Text>
+        Autor: 
+      </Card.Text>
+      <Card.Text>
+        Categoria: {category}
+      </Card.Text>
+
       {/* <button className="agrega">{ButtonText}</button> */}
       <Link to="/book">Mas informacion</Link>
 
-      {/* <button onClick={handleClick2}>{ButtonText}</button> */}
+     <Card.Text>
+        Agregado por: 
+      </Card.Text>
     </Card.Body>
   </Card>
     )

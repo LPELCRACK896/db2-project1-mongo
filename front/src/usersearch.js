@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import BCard from "./BCard";
 
-function Buscador(){
+function UsuariosS(){
     const [keyword, setKeyword] = useState("")
     const [books, setBooks] = useState("")
     const [pagination, setPagination] = useState({actual: {page: 1, limit:null}, next:{page:null, limit:null}, prev:{page:null, limit:null}})
@@ -29,6 +29,13 @@ function Buscador(){
         
     }
     return(
+
+        // CAMBIAR
+        // CABIAR
+        // CAMBIAR
+        //VAMIADR
+        //VREHLFBVIEFRBVLKV RLJRBGVL JBJNS JKNV
+        //BUKRFBVIEDSFUBNV;UEISRBDG HRGIUDHV 
     <>
         <h3>Buscar</h3>
         <input className="Buscador" name="finder" onChange={search}></input>
@@ -48,4 +55,4 @@ function Buscador(){
     );
 }
 
-export default Buscador
+export default UsuariosS
