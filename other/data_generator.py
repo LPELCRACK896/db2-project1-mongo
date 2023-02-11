@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from constants import URL
 import json
 import requests
+import random
 
 def authors_gen(total_authors):
     faker = Faker()
@@ -11,9 +12,10 @@ def authors_gen(total_authors):
 
 def user_generator(total_users,  role = "user"):
     roles = ["user", "publisher", "reviewer"]
+    usr_img = random.choice(['default_user_1', 'default_user_2', 'default_user_3', 'default_user_4', 'default_user_5', 'default_user_6', 'default_user_7'])
     if role not in roles: raise Exception('Not valid user')
     faker = Faker()
-    return pd.DataFrame([{"username": faker.name(),"email":faker.email(), "password": "admin123", "role": role} for _ in range(total_users)])
+    return pd.DataFrame([{"username": faker.name(),"email":faker.email(), "password": "admin123", "role": role, "image":usr_img} for _ in range(total_users)])
     
 
 def df_to_mongo(df, collection, db_name, mongo_uri):

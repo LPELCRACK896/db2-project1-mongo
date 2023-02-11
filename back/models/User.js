@@ -57,10 +57,14 @@ const UserScheema = new Schema({
     },
     favBooks :[{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],//Referenced
     ratedBooks: [embededBookSchema],
+    readingBooks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],
+    wantToReadBooks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Book'}],
+    friends: [{type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
     favAuthor: embededAuthor, //Embeded
     image: {
         type: String, 
-        enum: ['user_default1', 'user_default2', 'user_default3']
+        enum: ['default_user_1', 'default_user_2', 'default_user_3', 'default_user_4', 'default_user_5', 'default_user_6', 'default_user_7'],
+        default: 'default_user_1'
     }, 
 })
 

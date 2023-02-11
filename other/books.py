@@ -7,6 +7,8 @@ import random
 
 def book_post(df_authors, df_publishers,total_books):
     categorias = ["Aventura", "Ciencia ficcion", "Fantasia", "Gotica", "Novela negra", "Romance", "Biografia", "Distopia"]
+    book_covers = ['default_book_1', 'default_book_2', 'default_book_3', 'default_book_4', 'default_book_5', 'default_book_6', 'default_book_7']
+    
     faker = Faker()
 
     for _ in range(total_books):
@@ -14,7 +16,7 @@ def book_post(df_authors, df_publishers,total_books):
         author_id = str(random_row.iloc[0]['_id'])
         random_row = df_publishers.sample(n=1)
         publisher_id = str(random_row.iloc[0]['_id'])
-        book = {"title": faker.sentence(nb_words=4), "author": author_id, "publisher": publisher_id, "pages": faker.random_int(min=18, max=65, step=1),"year": faker.random_int(min=1800, max=2023, step=1), "isbn": faker.isbn10(separator=''), "desc": ' '.join([faker.sentence() for _ in range(random.randint(4, 6))]), "category": random.choice(categorias)}
+        book = {"title": faker.sentence(nb_words=4), "author": author_id, "publisher": publisher_id, "pages": faker.random_int(min=18, max=65, step=1),"year": faker.random_int(min=1800, max=2023, step=1), "isbn": faker.isbn10(separator=''), "desc": ' '.join([faker.sentence() for _ in range(random.randint(4, 6))]), "category": random.choice(categorias), "image": random.choice(book_covers)}
         # Convert the dictionary to a JSON string
         json_data = json.dumps(book)
 
