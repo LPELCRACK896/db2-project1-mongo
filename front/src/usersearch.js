@@ -2,6 +2,7 @@ import "./App.css"
 import { useState } from "react";
 import axios from "axios";
 import BCard from "./BCard";
+import { FaArrowRight, FaArrowLeft, FaSearch} from 'react-icons/fa';
 
 function UsuariosS(){
     const [keyword, setKeyword] = useState("")
@@ -36,22 +37,24 @@ function UsuariosS(){
         //VAMIADR
         //VREHLFBVIEFRBVLKV RLJRBGVL JBJNS JKNV
         //BUKRFBVIEDSFUBNV;UEISRBDG HRGIUDHV 
-    <>
-        <h3>Buscar</h3>
-        <input className="Buscador" name="finder" onChange={search}></input>
         <>
-        {books&&
-        books.map(book =>
-            <BCard bookJson = {book} /> 
-        )
-        }
-
-        <footer>
-            <button className="prev">⬅️</button>
-            <button className="next">➡️</button>
-        </footer>
+        <header>
+            <h3 className="searchBU">Buscar usuarios</h3>
+            <input className="Buscador" name="finder" onChange={search}></input>
+            <button className="buscacion"><FaSearch/></button>
+            </header><>
+            {books&&
+            books.map(book =>
+                <BCard bookJson = {book} /> 
+            )
+            }
+    
+            <footer>
+                <button className="prev"><FaArrowLeft/></button>
+                <button className="next"><FaArrowRight/></button>
+            </footer>
+            </>
         </>
-    </>
     );
 }
 

@@ -2,7 +2,7 @@ import "./App.css"
 import { useState } from "react";
 import axios from "axios";
 import BCard from "./BCard";
-
+import { FaArrowRight, FaArrowLeft, FaSearch} from 'react-icons/fa';
 function Buscador(){
     const [keyword, setKeyword] = useState("")
     const [books, setBooks] = useState("")
@@ -30,9 +30,11 @@ function Buscador(){
     }
     return(
     <>
-        <h3>Buscar libros</h3>
+    <header>
+        <h3 className="searchBU">Buscar libros</h3>
         <input className="Buscador" name="finder" onChange={search}></input>
-        <>
+        <button className="buscacion"><FaSearch/></button>
+        </header><>
         {books&&
         books.map(book =>
             <BCard bookJson = {book} /> 
@@ -40,8 +42,8 @@ function Buscador(){
         }
 
         <footer>
-            <button className="prev">⬅️</button>
-            <button className="next">➡️</button>
+            <button className="prev"><FaArrowLeft/></button>
+            <button className="next"><FaArrowRight/></button>
         </footer>
         </>
     </>

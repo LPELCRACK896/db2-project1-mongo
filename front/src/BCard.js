@@ -23,7 +23,7 @@ const BCard = (props) => {
       <Card.Text>
         Autor: 
       </Card.Text>
-      <Card.Text>
+      <Card.Text className='cat'>
         Categoria: {category}
       </Card.Text>
 

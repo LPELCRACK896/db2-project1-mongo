@@ -97,13 +97,14 @@ a{
 
 h2{
   text-align: left;
-  color: 'black';
+  color: #282c34;
   margin: 10px;
 }
 
-h3{
-  text-align: center;
-  color: 'black';
+.searchBU{
+  margin-left: 20px;
+  text-align: left;
+  color: #282c34;
   
 }
 a.user{
@@ -141,11 +142,11 @@ p{
   color: 'black';
 }
 
-input{
+/* input{
   color: 'black';
   align-self: center;
   margin: 5px 10px;
-}
+} */
 input:invalid {
   border: 2px solid red;
 }
@@ -161,10 +162,22 @@ input:invalid:focus {
 }
 
 .Buscador{
-  color: 'black';
   align-self: center;
-  display: grid;
-  margin: auto;
+  margin:20px;
+  height: 40px;
+  font-size: larger;
+  font-weight: 500;
+  width: 200px;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+.buscacion{
+  padding: 5px;
+  width:50px ;
+  border-color: #f9d244;
+  font-size: 25px; 
+  justify-content: center;
 }
 
 .swal2-html-container{
@@ -183,12 +196,14 @@ input:invalid:focus {
 
 .prev{
   float: left;
+  border-color: #282c3400;
   padding-left: 25px;
   padding-right:25px;
   font-size: 30px;
 }
 
 .next{
+  border-color: #282c3400;
   float: right;
   padding-left: 25px;
   padding-right:25px;
@@ -213,3 +228,11 @@ Option{
   color: aliceblue;
   padding: 10px;
 }
+
+.cat{
+  text-align: right;
+  font-weight: bolder;
+  font-size: large;
+}
+
+

@@ -70,12 +70,9 @@ export const Logins = () => {
         <header className="Cabeza">
           <img src={logo} alt="bee pattern " className="bee"/>
           <h2 className="comp">Books Bee Books</h2>
-          
-        
         <nav className="Navegacion">
         <Link  className="linkcito" to="/">Inicio</Link> | <Link className="linkcito" to="/buscar">Buscar Libros</Link> | <Link className="linkcito" to="/usuarios">Buscar usuarios</Link>
         
-      
     </nav>
     </header>
     <Iniciacion/>
