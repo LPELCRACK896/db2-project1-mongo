@@ -3,6 +3,7 @@ import Inicio from "./Inicio";
 import Iniciacion from "./login";
 import Buscador from "./search"
 import InfoBooks from "./InfoLibro";
+import Profile from "./profile";
 import "./App.css"
 import logo from './Logo.png'
 import {useState, useEffect} from 'react';
@@ -185,6 +186,26 @@ export const UserSeatch = () =>{
 
     </nav></header>
       <UsuariosS/>
+    </div>
+
+  )
+}
+
+export const Perfil = () =>{
+  
+  return(
+    
+    <div>
+      <header className="Cabeza">
+    <img src={logo} alt="bee pattern " className="bee"/>
+    
+    <h2 className="comp">Books Bee Books</h2>
+
+    <Link className="linkcito" to="/">Inicio</Link> | <Link className="linkcito" to="/buscar">Buscar libros</Link>
+    <nav>
+
+    </nav></header>
+      <Profile/>
     </div>
 
   )

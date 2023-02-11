@@ -75,13 +75,7 @@ label {
   padding: 10px;
 }
 
-/* a:link{
-  color: aliceblue;
-  font-size: 30px;
-  background-color: #282c34;
-  margin: 20px;
-  padding: 10px;
-} */
+
 
 a{
   color: #282c34;
@@ -112,6 +106,8 @@ a.user{
   float: right;
   margin-right: 10px;
   margin-top: -10px;
+  padding-left: 10px;
+  padding-right: 10px;
   padding-bottom: 21px;
   padding-top: 21px; 
   color: aliceblue;

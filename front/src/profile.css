@@ -1,0 +1,32 @@
+.PPic{
+    border-radius: 50%;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10pxpx;
+    float: left;
+}
+
+.Favoritos{
+    font-size: 30px;
+}
+
+.Favbooks{
+    margin: 20px;
+    width: 300px;
+    display:inline-grid;
+    font-size: 20px;
+}
+
+.UserCosas{
+    margin: 50px;
+    display:inline-grid;
+    font-size: 20px;
+}
+
+.UserName{
+    font-size: 50px;
+}
+
+.element{
+    background-color: #fde55ada;
+}
