@@ -16,7 +16,7 @@ exports.createBook = asyncHandler(async (req, res, next ) => {
     publisher = publisher ? publisher: req.user.id
     if(!publisher) return next(new ErrorResponse(`Couldnt find the author with id ${req.body.publisher}'`, 404))
 
-    let book = new Book({ title: req.body.title, author: {name: author.name, age: author.age, auth_id: author._id}, publisher: mongoose.Types.ObjectId(publisher) , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc, category: req.body.category})
+    let book = new Book({ title: req.body.title, author: {name: author.name, age: author.age, auth_id: author._id}, publisher: mongoose.Types.ObjectId(publisher) , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc, category: req.body.category, image: req.body.image})
     book = await book.save()
     author = await Author.findByIdAndUpdate(req.body.author, {$push: {books: book}}, {new: true})
     res.status(201).json({succes: true, book, author})

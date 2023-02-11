@@ -10,12 +10,13 @@ const crypto = require('crypto');
 // @access   Public
 
 exports.register = asyncHandler(async(req, res, next)=>{
-    const {username, email, password, role } = req.body
+    const {username, email, password, role, image} = req.body
     const user = await User.create({
         username, 
         email, 
         password, 
-        role
+        role, 
+        image
     })
     sendTokenResponse(user, 200, res)
 })

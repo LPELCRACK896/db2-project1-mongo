@@ -64,6 +64,11 @@ const BookSchema = new Schema({
         type: Number,
         min: [1, 'Rating must be at least 1'],
         max: [10, 'Rating must can not be more than 10']
+    }, 
+    image: {
+        type: String, 
+        enum: ['default_book_1', 'default_book_2', 'default_book_3', 'default_book_4', 'default_book_5', 'default_book_6', 'default_book_7'],
+        default: 'default_book_1'
     }
 });
 
