@@ -1,0 +1,84 @@
+.BookPic{
+    border: 10px solid #fde55a6e;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 150px;
+    float: left;
+}
+
+.Titulote{
+    text-align: left;
+    margin: 10px;
+    font-size: 50px;
+}
+
+.read{
+    padding: 20px;
+    width: 250px;
+    float: right;
+    font-size: 20px;
+    background-color: #fde55ada;
+    border: 5px solid #fde55a6e;
+}
+
+.Autorcito{
+    text-align: left;
+    margin: 10px;
+    font-size: 30px;
+}
+
+.publicaor{
+    text-align: left;
+    margin: 10px;
+    font-size: 20px;
+    color: #282c34d0;
+}
+
+.gatogoria{
+    text-align: left;
+    margin: 10px;
+    font-size: 30px;
+}
+
+.desc{
+    margin-left: 20px;
+    text-align: left;
+    font-size: 20px;
+    background-color: #fde55a6e;
+    border: 10px solid #fde55a6e;
+}
+
+.ratingS{
+    border: 10px solid #fde55a6e;
+    margin: 20px;
+    width: 300px;
+    display:inline-grid;
+    font-size: 30px;
+}
+
+.who{
+    text-align: center;
+}
+.numbers{
+    text-align: center;
+}
+.rev{
+    background-color: #fde55a6e;
+}
+.inform{
+    margin-left: 20px;
+    background-color: #fde55ada;
+    
+}
+.username{
+    font-size: 25px;
+    display:inline-grid;
+    margin-left: 20px;
+    background-color: #fde55a6e;
+
+}
+.says{
+    font-size: 20px;
+    margin-left: 40px;
+    background-color: #fde55a6e;
+}

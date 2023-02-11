@@ -140,10 +140,10 @@ export const BookInfo = () => {
   return (
     <div>
       <header className="Cabeza">
-      <img src={logo} alt="bee pattern " className="bee"/>
-      <p className="user" ><Link  className="user" to="/login">{username}</Link></p>
-    <h2>Books Bee Books</h2>
-<nav className="Navegacion">
+          <img src={logo} alt="bee pattern " className="bee"/>
+          <h2 className="comp">Books Bee Books</h2>
+          <p className="user" ><Link  className="user" to="/login">{username}</Link></p>
+          <nav className="Navegacion">
     <Link className="linkcito"  to="/">Inicio</Link> | <Link className="linkcito" to="/usuarios">Buscar usuarios</Link>
     
       
