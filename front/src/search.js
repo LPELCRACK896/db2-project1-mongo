@@ -6,34 +6,65 @@ import { FaArrowRight, FaArrowLeft, FaSearch} from 'react-icons/fa';
 function Buscador(){
     const [keyword, setKeyword] = useState("")
     const [books, setBooks] = useState("")
-    const [pagination, setPagination] = useState({actual: {page: 1, limit:null}, next:{page:null, limit:null}, prev:{page:null, limit:null}})
+    const [totalPages, setTotalPages] = useState(null)
     const [limit, setLimit] = useState(10)
-
+    const [actualPage, setActualPage] = useState(1)
 
     const checkField = (field) => !(field==="" || field===undefined || field===null)
-
-    const search = async($event)=>{
-        $event.preventDefault()
-        setKeyword($event.target.value)
-        console.log(keyword)
-        if (!checkField(keyword)) return
-        const res = await axios.post("http://localhost:5000/api/v1/books/findbook",
+    const fetchPages = async(page) =>{
+        await axios.post( `http://localhost:5000/api/v1/books/findbook?page=${page}`,
         {
             keyword, 
-            page: pagination.actual.page,
+            page,
             limit
         }
-        ).then(res => res.data)
-        setBooks(res.data)
-        console.log(books)
+        ).then(res => {
+            setBooks(res.data.data)
+            setTotalPages(res.data.totalPages)
+        })
+    }
+    const search = async($event)=>{
+        $event.preventDefault()
+        setActualPage(1)
+        if (!checkField(keyword)) {
+            setTotalPages(null)
+        }
+        await fetchPages(actualPage)
+        
+    }
+    const goNext = async(e)=>{
+        e.preventDefault()
+        if(actualPage+1>totalPages) {
+            
+            return
+        }
+        setActualPage(actualPage+1)
+        await fetchPages(actualPage)
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+
+    }
+    const goPrev = async(e)=>{
+        e.preventDefault()
+        if(actualPage===1) {
+            return
+        }
+        setActualPage(actualPage-1)
+        await fetchPages(actualPage)
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         
     }
     return(
     <>
     <header>
         <h3 className="searchBU">Buscar libros</h3>
-        <input className="Buscador" name="finder" onChange={search}></input>
-        <button className="buscacion"><FaSearch/></button>
+        <input className="Buscador" name="finder" onChange={e => setKeyword(e.target.value)}></input>
+        <button className="buscacion" onClick={async e => await search(e, 1)}><FaSearch/></button>
         </header><>
         {books&&
         books.map(book =>
@@ -42,8 +73,8 @@ function Buscador(){
         }
 
         <footer>
-            <button className="prev"><FaArrowLeft/></button>
-            <button className="next"><FaArrowRight/></button>
+            <button className="prev" style={{visibility: actualPage===1?'hidden':'visible'}} onClick={goPrev}><FaArrowLeft/></button>
+            <button className="next" style={{visibility: actualPage+1>totalPages?'hidden':'visible'}} onClick={goNext}><FaArrowRight/></button>
         </footer>
         </>
     </>

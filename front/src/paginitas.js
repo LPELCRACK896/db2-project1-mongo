@@ -10,6 +10,8 @@ import logo from './Logo.png'
 import {useState, useEffect} from 'react';
 import axios from "axios";
 import UsuariosS from "./usersearch";
+import { users_HM } from './resources/images_mapping'
+import user_default_1 from './pictures/users/default_user_1.png'
 
 export const Home = () => {
   const [username, setUsername] = useState("...who are you??")
@@ -27,7 +29,7 @@ export const Home = () => {
       setUsername(res.data.username)
     }
     getMe()
-  })
+  }, [])
   return (
     <div >
         {/* <img src={Girl} alt="Girl reading " className="personita"/> */}
@@ -120,8 +122,6 @@ export const Search = () => {
 };
 
 
-
-
 export const BookInfo = () => {
   const [username, setUsername] = useState("...who are you??")
   useEffect(()=>{
@@ -168,7 +168,6 @@ export const UserSeatch = () =>{
           Authorization: `Bearer ${token}`
         }
       } ).then(res => res.data)
-      console.log(res)
       if(!res.success) return
       setUsername(res.data.username)
     }
@@ -193,12 +192,11 @@ export const UserSeatch = () =>{
 }
 
 export const Perfil = () =>{
-  
   return(
     
     <div>
       <header className="Cabeza">
-    <img src={logo} alt="bee pattern " className="bee"/>
+    <img src={logo} alt="bee pattern " className="bee"/>{/*<img src={(user?users_HM[user.image]:user_default_1)||user_default_1} alt="bee pattern " className="bee"/>*/ }
     <p className="user" ><Link  className="user" to="/newbook">Add book</Link></p>
     <h2 className="comp">Books Bee Books</h2>
 

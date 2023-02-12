@@ -17,6 +17,7 @@ const authors = require('./routes/authors')
 const auth = require('./routes/auth')
 const users = require('./routes/users')
 const reviews = require('./routes/reviews')
+const persons = require('./routes/persons')
 
 const app = express()
 
@@ -49,6 +50,7 @@ app.use('/api/v1/authors', authors)
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/users', users)
 app.use('/api/v1/reviews', reviews)
+app.use('/api/v1/persons', persons)
 
 //Error handler middleware -> Must be after Mounting routes so it works in those. Middleware kinda works in a linear order. 
 app.use(errorHandler)

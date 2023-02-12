@@ -3,6 +3,7 @@ const asyncHandler = require('../middlewares/async')
 const {Book} = require('../models/Book')
 const { User } = require('../models/User')
 const {Review} = require('../models/Review')
+const { mongoose } = require('mongoose')
 
 
 
@@ -11,10 +12,13 @@ const {Review} = require('../models/Review')
 // @route GET /api/v1/books/:bookid/reviews/
 // @access Public
 exports.getReviews = asyncHandler(async (req, res, next)=>{
-
+    console.log(typeof(req.params.bookid))
+    const id = mongoose.Types.ObjectId(req.params.bookid)
     if(req.params.bookid){
-        const reviews = await Review.find({book: req.params.bookId})
-        
+        let reviews = await Review.find()
+        reviews = reviews.filter(review =>{
+            return id===review.book
+        })
         return res.status(200).json({
             success: true, 
             count: reviews.length,

@@ -33,21 +33,176 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
 // @route   GET /api/v1/books/:id
 // @access   Public
 exports.getBook = asyncHandler(async (req, res, next)=>{
-    console.log(req.params)
     const id = mongoose.Types.ObjectId(req.params.id)
-    const book = await Book.aggregate([
-        {$match: {_id: id}}, 
-        {$project: {
-            _id: "$_id",
-            author: "$author.name",
-            pages: "$pages",
-            year: "$year",  
-            desc: "$desc",
-            category: "$category",
-            rate: {$divide: ["$rate", "$timesRated"]}
-        }}
-    ])
-    if (book.length!==0) return res.status(200).json({succes: true, book: book[0]})
+    const book = await Book.aggregate(
+        [
+            {
+              $match:
+                /**
+                 * query: The query in MQL.
+                 */
+                {
+                  _id: id,
+                },
+            },
+            {
+                $lookup:
+                  /**
+                   * from: The target collection.
+                   * localField: The local join field.
+                   * foreignField: The target join field.
+                   * as: The name for the results.
+                   * pipeline: Optional pipeline to run on the foreign collection.
+                   * let: Optional variables to use in the pipeline field stages.
+                   */
+                  {
+                    from: "users",
+                    localField: "publisher",
+                    foreignField: "_id",
+                    as: "publisher",
+                  },
+              },
+              {
+                $unwind:
+                  /**
+                   * path: Path to the array field.
+                   * includeArrayIndex: Optional name for index.
+                   * preserveNullAndEmptyArrays: Optional
+                   *   toggle to unwind null and empty values.
+                   */
+                  {
+                    path: "$publisher",
+                    includeArrayIndex: "arrayIndex",
+                    preserveNullAndEmptyArrays: false,
+                  },
+              },
+              {
+                $project:
+                  /**
+                   * specifications: The fields to
+                   *   include or exclude.
+                   */
+                  {
+                    _id: "$_id",
+                    author: "$author.name",
+                    author_id: "$author._id",
+                    pages: "$pages",
+                    year: "$year",
+                    desc: "$desc",
+                    category: "$category",
+                    publisher: "$publisher",
+                    publisher_id: "$publisher._id",
+                    rate: {
+                      $divide: ["$rate", "$timesRated"],
+                    },
+                    reviewerRate: 1,
+                    image: 1
+                  },
+              },
+              {
+                $lookup:
+                  /**
+                   * from: The target collection.
+                   * localField: The local join field.
+                   * foreignField: The target join field.
+                   * as: The name for the results.
+                   * pipeline: Optional pipeline to run on the foreign collection.
+                   * let: Optional variables to use in the pipeline field stages.
+                   */
+                  {
+                    from: "reviews",
+                    localField: "_id",
+                    foreignField: "book",
+                    as: "reviews",
+                  },
+              },
+              {
+                $unwind:
+                  /**
+                   * path: Path to the array field.
+                   * includeArrayIndex: Optional name for index.
+                   * preserveNullAndEmptyArrays: Optional
+                   *   toggle to unwind null and empty values.
+                   */
+                  {
+                    path: "$reviews",
+                    preserveNullAndEmptyArrays: false,
+                  },
+              },
+              {
+                $lookup:
+                  /**
+                   * from: The target collection.
+                   * localField: The local join field.
+                   * foreignField: The target join field.
+                   * as: The name for the results.
+                   * pipeline: Optional pipeline to run on the foreign collection.
+                   * let: Optional variables to use in the pipeline field stages.
+                   */
+                  {
+                    from: "users",
+                    localField: "reviews.user",
+                    foreignField: "_id",
+                    as: "reviewer",
+                  },
+              },
+              {
+                $unwind: {
+                  path: "$reviewer",
+                  preserveNullAndEmptyArrays: false,
+                },
+              },
+              {
+                $group: {
+                  _id: "$_id",
+                  author: {
+                    $first: "$author",
+                  },
+                  pages: {
+                    $first: "$pages",
+                  },
+                  year: {
+                    $first: "$year",
+                  },
+                  desc: {
+                    $first: "$desc",
+                  },
+                  category: {
+                    $first: "$category",
+                  },
+                  publisher: {
+                    $first: "$publisher",
+                  },
+                  rate: {
+                    $first: "$rate",
+                  },
+                  image:{
+                    $first: "$image"
+                  },
+                  reviewerRate: {
+                    $first: "$reviewerRate",
+                  },
+                  author_id: {
+                    $first: "$author_id"
+                  }, 
+                  publisher_id:{
+                    $first: "$publisher_id"
+                  },  
+                  reviews: {
+                    $push: {
+                      text: "$reviews.text",
+                      reviewerName: "$reviewer.username",
+                      review_id: "$reviews._id",
+                      reviewer_id: "$reviewer._id",
+                      rate: "$reviews.rating",
+                    },
+                  },
+                },
+              },
+        
+        ]
+    )
+    if (book.length!==0) return res.status(200).json({success: true, data: book[0]})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
 
@@ -125,28 +280,11 @@ exports.findBook = asyncHandler(async(req, res, next)=>{
 
     const endIndex = page*limit
     const startIndex = (page-1)*limit
-    const pagination = {}
     
     const books =  await Book.find({ $or: [{ title: { $regex: keyword, $options: "i" } }, { "author.name": { $regex: keyword, $options: "i" } }] }).skip(startIndex).limit(limit)
     const count = await Book.countDocuments({ $or: [{ title: { $regex: keyword, $options: "i" } }, { "author.name": { $regex: keyword, $options: "i" } }] })
-    
-    if (endIndex<count){
-        pagination.next = {
-            page: page+1,
-            limit
-        }
-    }else{
-        pagination.next = null
-    }
-    if (startIndex>0){
-        pagination.prev = {
-            page: page-1,
-            limit
-        }
-    }else{
-        pagination.prev = null
-    }
+    const totalPages = Math.ceil(count/limit)
 
 
-    return res.status(200).json({success: true, data: books, pagination})
+    return res.status(200).json({success: true, data: books, totalPages})
 })

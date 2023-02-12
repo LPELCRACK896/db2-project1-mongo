@@ -8,7 +8,7 @@ bookImages.keys().forEach((key) => {
 });
 
 const users_HM = {};
-const usersImages = require.context('../pictures/books', false, /\.(png|jpe?g|svg)$/);
+const usersImages = require.context('../pictures/users', false, /\.(png|jpe?g|svg)$/);
 
 usersImages.keys().forEach((key) => {
   const imageName = key.split('/').pop().split('.')[0];
