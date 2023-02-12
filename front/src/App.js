@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Routes, Route, RedirectFunction} from "react-router-dom"
-import { Logins, Search, Home, BookInfo, UserSeatch, Perfil, Fomulario } from './paginitas';
+import { Logins, Search, Home, BookInfo, UserSeatch, Perfil, Fomulario, AuthorBuscar, AuthorPagina } from './paginitas';
 
 const rootElement = document.getElementById("root");
 const NotFound = () => <h1>404: Page Not Found</h1>;
@@ -22,7 +22,8 @@ function App() {
         <Route path="/profile" element={< Perfil />} />
         <Route path="/profile/:id" element={<Perfil />} />
         <Route path="/newbook" element={<Fomulario />} /> 
-
+        <Route path="/author" element={<AuthorBuscar/>}/>
+        <Route path="/authorProfile" element={<AuthorPagina/>}/>
       </Routes>
     </BrowserRouter>,
   rootElement
