@@ -9,9 +9,19 @@ import Swal from 'sweetalert2';
 import axios from "axios";
 import { books_HM } from './resources/images_mapping'
 
+import PopUp from "./poporopo";
+
+
+
+
 function InfoBooks(){
     const [book, setBook] = useState()
     const [reviews, setReviews] = useState([])
+
+    const [popUp, setPopUp] = useState(false)
+    // adds class to darken background color
+    // const duringPopUp = popUp ? " during-popup" : ""
+
 
     const {id} = useParams()
     const swalError = (message) =>{
@@ -48,11 +58,23 @@ function InfoBooks(){
 
   }, [])
 return(
+    
     <div>
         <img className="BookPic" src={book?books_HM[book.image]:ATSAT} alt="book_cover" height={"500px"}></img>
         <button className="read">Mark as read</button>
         <p className="Titulote">{book?book.title:"none"}</p>
-        <button className="read">Rate</button>
+<div>
+    <div>
+{/* Aqui es la clase de arriba del pop up */}
+
+<button onClick={()=>setPopUp(true)} className="read" >Rate</button>
+        </div>
+            {popUp && <PopUp setPopUp={setPopUp}/>}
+        </div>
+
+{/* <button onClick={popUp && <PopUp setPopUp={setPopUp}/>}>rate</button> */}
+        
+        
         <p className="Autorcito">{book?book.author:"none"}</p>
         <p className="publicaor">Publicado por: <Link to = {`/profile/${book?book.publisher._id:''}`}>{book?book.publisher.username:"none"}</Link></p>
         <p className="gatogoria">{book?book.category:"none"}</p>

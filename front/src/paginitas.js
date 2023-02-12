@@ -7,6 +7,7 @@ import Profile from "./profile";
 import Form from "./Bookform";
 import AuthLook from "./Authorsearch";
 import Authpage from "./AuthorPage";
+import Poporopo from "./poporopo";
 import "./App.css"
 import logo from './Logo.png'
 import {useState, useEffect} from 'react';
@@ -293,6 +294,24 @@ export const AuthorPagina=()=>{
         </header>
 
         <Authpage/>
+    </div>
+  )
+}
+
+export const Testero =()=>{
+  return(
+    <div>
+    <header className="Cabeza">
+    <img src={logo} alt="bee pattern " className="bee"/>
+    
+    <h2 className="comp">Books Bee Books</h2>
+
+    <Link className="linkcito" to="/">Inicio</Link> 
+    <nav>
+
+    </nav>
+    </header>
+    <Poporopo/>
     </div>
   )
 }
