@@ -1,16 +1,13 @@
 import './App.css'
 
 function Form(){
+    const categories = ["Aventura", "Ciencia ficcion", "Fantasia", "Gotica", "Novela negra", "Romance", "Biografia", "Distopia"]
     return(
         <>
         <div className="Entra">
             <p>Title</p>
             <input></input>
         </div>
-        <div className="Entra">
-            <p>Slug</p>
-            <input></input>
-</div>
 
 <div className="Entra">
             <p>Author</p>
@@ -38,13 +35,16 @@ function Form(){
 </div>
 <div className="Entra">
             <p>Category</p>
-            <input></input>
+            <select>
+            {categories&&
+              categories.map(category => (
+                <option value={category}>{category}</option>
+              ))
+
+            }
+          </select>
 </div>
-<div className="Entra">
-            <p>Publisher</p>
-            <input></input>
-</div>
-<div className="Entra">
+        <div className="Entra">
             <p>Reviewer rate</p>
             <input></input>
         </div>
