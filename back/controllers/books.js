@@ -36,25 +36,12 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
     const id = mongoose.Types.ObjectId(req.params.id)
     let book = await Book.aggregate(
         [
-            {
-              $match:
-                /**
-                 * query: The query in MQL.
-                 */
+            {$match:
                 {
                   _id: id,
                 },
             },
-            {
-                $lookup:
-                  /**
-                   * from: The target collection.
-                   * localField: The local join field.
-                   * foreignField: The target join field.
-                   * as: The name for the results.
-                   * pipeline: Optional pipeline to run on the foreign collection.
-                   * let: Optional variables to use in the pipeline field stages.
-                   */
+            {$lookup:
                   {
                     from: "users",
                     localField: "publisher",
@@ -62,26 +49,14 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                     as: "publisher",
                   },
               },
-              {
-                $unwind:
-                  /**
-                   * path: Path to the array field.
-                   * includeArrayIndex: Optional name for index.
-                   * preserveNullAndEmptyArrays: Optional
-                   *   toggle to unwind null and empty values.
-                   */
+              {$unwind:
                   {
                     path: "$publisher",
                     includeArrayIndex: "arrayIndex",
                     preserveNullAndEmptyArrays: false,
                   },
               },
-              {
-                $project:
-                  /**
-                   * specifications: The fields to
-                   *   include or exclude.
-                   */
+              {$project:
                   {
                     _id: "$_id",
                     author: "$author.name",
@@ -100,16 +75,7 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                     image: 1
                   },
               },
-              {
-                $lookup:
-                  /**
-                   * from: The target collection.
-                   * localField: The local join field.
-                   * foreignField: The target join field.
-                   * as: The name for the results.
-                   * pipeline: Optional pipeline to run on the foreign collection.
-                   * let: Optional variables to use in the pipeline field stages.
-                   */
+              {$lookup:
                   {
                     from: "reviews",
                     localField: "_id",
@@ -117,29 +83,13 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                     as: "reviews",
                   },
               },
-              {
-                $unwind:
-                  /**
-                   * path: Path to the array field.
-                   * includeArrayIndex: Optional name for index.
-                   * preserveNullAndEmptyArrays: Optional
-                   *   toggle to unwind null and empty values.
-                   */
+              {$unwind:
                   {
                     path: "$reviews",
                     preserveNullAndEmptyArrays: false,
                   },
               },
-              {
-                $lookup:
-                  /**
-                   * from: The target collection.
-                   * localField: The local join field.
-                   * foreignField: The target join field.
-                   * as: The name for the results.
-                   * pipeline: Optional pipeline to run on the foreign collection.
-                   * let: Optional variables to use in the pipeline field stages.
-                   */
+              {$lookup:
                   {
                     from: "users",
                     localField: "reviews.user",
@@ -147,14 +97,12 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                     as: "reviewer",
                   },
               },
-              {
-                $unwind: {
+              {$unwind: {
                   path: "$reviewer",
                   preserveNullAndEmptyArrays: false,
                 },
               },
-              {
-                $group: {
+              {$group: {
                   _id: "$_id",
                   author: {
                     $first: "$author",
@@ -209,23 +157,12 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
     if (book.length===0)
       book = await Book.aggregate([{
         $match:
-          /**
-           * query: The query in MQL.
-           */
           {
             _id: id,
           },
       },
       {
           $lookup:
-            /**
-             * from: The target collection.
-             * localField: The local join field.
-             * foreignField: The target join field.
-             * as: The name for the results.
-             * pipeline: Optional pipeline to run on the foreign collection.
-             * let: Optional variables to use in the pipeline field stages.
-             */
             {
               from: "users",
               localField: "publisher",
@@ -235,12 +172,6 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
         },
         {
           $unwind:
-            /**
-             * path: Path to the array field.
-             * includeArrayIndex: Optional name for index.
-             * preserveNullAndEmptyArrays: Optional
-             *   toggle to unwind null and empty values.
-             */
             {
               path: "$publisher",
               includeArrayIndex: "arrayIndex",
@@ -249,10 +180,6 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
         },
         {
           $project:
-            /**
-             * specifications: The fields to
-             *   include or exclude.
-             */
             {
               _id: "$_id",
               author: "$author.name",
