@@ -207,21 +207,12 @@ exports.getReadingBooksByUser = asyncHandler(async(req, res, next)=>{
   const data = await User.aggregate([
     {
       $match:
-        /**
-         * query: The query in MQL.
-         */
         {
           _id: id,
         },
     },
     {
       $unwind:
-        /**
-         * path: Path to the array field.
-         * includeArrayIndex: Optional name for index.
-         * preserveNullAndEmptyArrays: Optional
-         *   toggle to unwind null and empty values.
-         */
         {
           path: "$readingBooks",
           includeArrayIndex: "string",
@@ -230,27 +221,15 @@ exports.getReadingBooksByUser = asyncHandler(async(req, res, next)=>{
     },
     {
       $lookup:
-        /**
-         * from: The target collection.
-         * localField: The local join field.
-         * foreignField: The target join field.
-         * as: The name for the results.
-         * pipeline: Optional pipeline to run on the foreign collection.
-         * let: Optional variables to use in the pipeline field stages.
-         */
         {
           from: "books",
-          localField: "ratedBooks.book",
+          localField: "readingBooks",
           foreignField: "_id",
           as: "bookdc",
         },
     },
     {
       $project:
-        /**
-         * specifications: The fields to
-         *   include or exclude.
-         */
         {
           book_doc: {
             $arrayElemAt: ["$bookdc", 0],
@@ -260,10 +239,6 @@ exports.getReadingBooksByUser = asyncHandler(async(req, res, next)=>{
     },
     {
       $group:
-        /**
-         * _id: The id of the group.
-         * fieldN: The first field name.
-         */
         {
           _id: "$username",
           books: {
@@ -286,21 +261,12 @@ exports.getFavouritesBooksByUser = asyncHandler(async(req, res, next)=>{
   const data = await User.aggregate([
     {
       $match:
-        /**
-         * query: The query in MQL.
-         */
         {
           _id: id,
         },
     },
     {
       $unwind:
-        /**
-         * path: Path to the array field.
-         * includeArrayIndex: Optional name for index.
-         * preserveNullAndEmptyArrays: Optional
-         *   toggle to unwind null and empty values.
-         */
         {
           path: "$favBooks",
           includeArrayIndex: "string",
@@ -309,27 +275,15 @@ exports.getFavouritesBooksByUser = asyncHandler(async(req, res, next)=>{
     },
     {
       $lookup:
-        /**
-         * from: The target collection.
-         * localField: The local join field.
-         * foreignField: The target join field.
-         * as: The name for the results.
-         * pipeline: Optional pipeline to run on the foreign collection.
-         * let: Optional variables to use in the pipeline field stages.
-         */
         {
           from: "books",
-          localField: "ratedBooks.book",
+          localField: "favBooks",
           foreignField: "_id",
           as: "bookdc",
         },
     },
     {
       $project:
-        /**
-         * specifications: The fields to
-         *   include or exclude.
-         */
         {
           book_doc: {
             $arrayElemAt: ["$bookdc", 0],
@@ -339,10 +293,6 @@ exports.getFavouritesBooksByUser = asyncHandler(async(req, res, next)=>{
     },
     {
       $group:
-        /**
-         * _id: The id of the group.
-         * fieldN: The first field name.
-         */
         {
           _id: "$username",
           books: {
@@ -364,52 +314,27 @@ exports.getFavouritesBooksByUser = asyncHandler(async(req, res, next)=>{
 exports.getWantToReadByUser = asyncHandler(async(req, res, next)=>{
   const id = mongoose.Types.ObjectId(req.params.id)
   const data = await User.aggregate([
-    {
-      $match:
-        /**
-         * query: The query in MQL.
-         */
+    {$match:
         {
           _id: id,
         },
     },
-    {
-      $unwind:
-        /**
-         * path: Path to the array field.
-         * includeArrayIndex: Optional name for index.
-         * preserveNullAndEmptyArrays: Optional
-         *   toggle to unwind null and empty values.
-         */
+    {$unwind:
         {
           path: "$wantToReadBooks",
           includeArrayIndex: "string",
           preserveNullAndEmptyArrays: false,
         },
     },
-    {
-      $lookup:
-        /**
-         * from: The target collection.
-         * localField: The local join field.
-         * foreignField: The target join field.
-         * as: The name for the results.
-         * pipeline: Optional pipeline to run on the foreign collection.
-         * let: Optional variables to use in the pipeline field stages.
-         */
+    {$lookup:
         {
           from: "books",
-          localField: "ratedBooks.book",
+          localField: "wantToReadBooks",
           foreignField: "_id",
           as: "bookdc",
         },
     },
-    {
-      $project:
-        /**
-         * specifications: The fields to
-         *   include or exclude.
-         */
+    {$project:
         {
           book_doc: {
             $arrayElemAt: ["$bookdc", 0],
@@ -417,12 +342,7 @@ exports.getWantToReadByUser = asyncHandler(async(req, res, next)=>{
           username: 1,
         },
     },
-    {
-      $group:
-        /**
-         * _id: The id of the group.
-         * fieldN: The first field name.
-         */
+    {$group:
         {
           _id: "$username",
           books: {
@@ -443,39 +363,19 @@ exports.getWantToReadByUser = asyncHandler(async(req, res, next)=>{
 exports.getFriendsByUser = asyncHandler(async(req, res, next)=>{
   const id = mongoose.Types.ObjectId(req.params.id)
   const data = await User.aggregate([
-    {
-      $match:
-        /**
-         * query: The query in MQL.
-         */
+    {$match:
         {
           _id: id,
         },
     },
-    {
-      $unwind:
-        /**
-         * path: Path to the array field.
-         * includeArrayIndex: Optional name for index.
-         * preserveNullAndEmptyArrays: Optional
-         *   toggle to unwind null and empty values.
-         */
+    {$unwind:
         {
           path: "$friends",
           includeArrayIndex: "string",
           preserveNullAndEmptyArrays: false,
         },
     },
-    {
-      $lookup:
-        /**
-         * from: The target collection.
-         * localField: The local join field.
-         * foreignField: The target join field.
-         * as: The name for the results.
-         * pipeline: Optional pipeline to run on the foreign collection.
-         * let: Optional variables to use in the pipeline field stages.
-         */
+    {$lookup:
         {
           from: "users",
           localField: "friends",
@@ -483,12 +383,7 @@ exports.getFriendsByUser = asyncHandler(async(req, res, next)=>{
           as: "friend",
         },
     },
-    {
-      $project:
-        /**
-         * specifications: The fields to
-         *   include or exclude.
-         */
+    {$project:
         {
           friend: {
             $arrayElemAt: ["$friend", 0],
@@ -496,12 +391,7 @@ exports.getFriendsByUser = asyncHandler(async(req, res, next)=>{
           username: 1,
         },
     },
-    {
-      $group:
-        /**
-         * _id: The id of the group.
-         * fieldN: The first field name.
-         */
+    {$group:
         {
           _id: "$username",
           friends: {
