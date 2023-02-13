@@ -19,7 +19,7 @@ exports.createBook = asyncHandler(async (req, res, next ) => {
     let book = new Book({ title: req.body.title, author: {name: author.name, age: author.age, auth_id: author._id}, publisher: mongoose.Types.ObjectId(publisher) , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc, category: req.body.category, image: req.body.image})
     book = await book.save()
     author = await Author.findByIdAndUpdate(req.body.author, {$push: {books: book}}, {new: true})
-    res.status(201).json({succes: true, book, author})
+    res.status(201).json({success: true, book, author})
 })
 
 // @desc Get all books
@@ -87,6 +87,7 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                     author: "$author.name",
                     author_id: "$author._id",
                     pages: "$pages",
+                    title: "$title",
                     year: "$year",
                     desc: "$desc",
                     category: "$category",
@@ -176,6 +177,9 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                   rate: {
                     $first: "$rate",
                   },
+                  title: {
+                    $first: "$title"
+                  },
                   image:{
                     $first: "$image"
                   },
@@ -219,7 +223,7 @@ exports.deleteBook = asyncHandler(async(req, res, next)=>{
         return next(new ErrorResponse(`User ${req.user.username} unauthorized`, 401))
     }
     await book.remove()
-    return res.status(200).json({succes: true, author})
+    return res.status(200).json({success: true, author})
 })
 
 // @desc Update one book
@@ -236,7 +240,7 @@ exports.updateBook = asyncHandler(async(req, res, next)=>{
         new: true, 
         runValidators: true
     })
-    if (book) return res.status(200).json({succes: true, data: book})
+    if (book) return res.status(200).json({success: true, data: book})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
 
@@ -256,24 +260,26 @@ exports.newRate = asyncHandler(async(req, res, next)=>{
             return book
         })
         
-        if (diffRate===0) return res.status(200).json({succes: true, msg: "Punctuation previously setted with same value"})
+        if (diffRate===0) return res.status(200).json({success: true, msg: "Punctuation previously setted with same value"})
 
         const user = await User.findByIdAndUpdate(req.user._id, {$set: {ratedBooks: ratedBooks}}, {new: true})
         const book = await Book.findByIdAndUpdate({_id: id}, { $inc: { rate: diffRate }}, {new: true})
         
-        if (book) return res.status(200).json({succes: true, data: book, user})
+        if (book) return res.status(200).json({success: true, data: book, user})
         return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
         
     }
     ratedBooks.push(new EmbededBook({rate: req.body.rate, book: id}))
     const user = await User.findByIdAndUpdate(req.user._id, {ratedBooks}, {new: true})
     const book = await Book.findByIdAndUpdate({_id: id}, { $inc: {timesRated: 1, rate: req.body.rate}}, {new: true})
-    if (book) return res.status(200).json({succes: true, data: book, user})
+    if (book) return res.status(200).json({success: true, data: book, user})
 
 
 
 })
-
+// @desc Gets a new rate
+// @route PUT /api/v1/books/find
+// @access Public
 exports.findBook = asyncHandler(async(req, res, next)=>{
     const { keyword } = req.body
     let { limit, page } = req.body
@@ -287,4 +293,28 @@ exports.findBook = asyncHandler(async(req, res, next)=>{
 
 
     return res.status(200).json({success: true, data: books, totalPages})
+})
+
+// @desc Gets a new rate
+// @route POST /api/v1/books/filtr
+// @access Public
+exports.filtrBook = asyncHandler(async(req, res, next)=>{
+  const {limit, skip} = req.body
+  let { aggregation } = req.body
+  //Structure: {field: "publisher", value: 63e7f582c59a747b821a781f} --> {$match: {"publisher": ObjectId('63e7f582c59a747b821a781f')}}
+  
+  /* if (id_aggregations) {
+    aggregation = aggregation?aggregation:[]
+    console.log(id_aggregations)
+    console.log() 
+    id_aggregations = id_aggregations.map(agg =>JSON.parse({"$match": {"publisher": mongoose.Types.ObjectId(agg.value)}}) )
+    console.log(id_aggregations)
+    aggregation = aggregation.concat(id_aggregations)
+  } */
+  console.log(aggregation)
+  if (!aggregation){
+    return next(new ErrorResponse("Must include an aggregation pipeline (some filter)", 404))
+  }
+  const data = await Book.aggregate(aggregation)
+  res.status(200).json({success: true, data})
 })

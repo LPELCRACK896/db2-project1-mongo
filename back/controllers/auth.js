@@ -51,6 +51,13 @@ exports.getMe = asyncHandler(async(req, res, next)=>{
 })
 
 // @desc    Forgot password
+// @route   POST /api/v1/auth/isitme/:id
+// @access   Private
+exports.isItMe = asyncHandler(async(req, res, next)=>{
+  if(!req.user.id) next(new ErrorResponse("Not logged in yet"))
+  return res.status(200).json({success: true, same: (req.user.id==req.params.id)})
+})
+// @desc    Forgot password
 // @route   POST /api/v1/auth/forgotpassword
 // @access   Public
 exports.forgotPassword = asyncHandler(async(req, res, next)=>{

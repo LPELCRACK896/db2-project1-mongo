@@ -13,6 +13,9 @@ import Swal from 'sweetalert2';
 function Profile(){
   const [user, setUser] = useState()
   const {id} = useParams()
+  const [isItMe, setIsItMe] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+
   const swalError = () =>{
     Swal.fire({
       icon: 'error',
@@ -22,7 +25,7 @@ function Profile(){
     })   
   }
   const getUser = async()=>{
-    await axios.get(`http://localhost:5000/api/v1/persons/${id}`, )
+    await axios.get(`http://localhost:5000/api/v1/persons/users/${id}`, )
     .then(res => {
       res = res.data
       console.log(res)
@@ -49,15 +52,25 @@ function Profile(){
     } ).then(res => res.data)
     if(!res.success) return
     setUser(res.data)
+    fetchIsItMe(res.data._id)
+  }
+  const fetchIsItMe = async(ID)=>{
+    if (!user) return
+    const token = localStorage.getItem("token")
+    const res = await axios.get(`http://localhost:5000/api/v1/auth/isitme/${ID}`,{ 
+    headers:{
+      Authorization: `Bearer ${token}`
+    }}).then(res=> res.data)
+    console.log(res)
   }
   useEffect(()=>{
     if (id){
       getUser()
+      fetchIsItMe(id)
       return
     }
     getMe()
-    console.log()
-
+    
   }, [])
     return(
         <>

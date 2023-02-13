@@ -79,7 +79,7 @@ return(
 
 
         </div>
-            {popUp && <PopUp setPopUp={setPopUp}/>}
+            {popUp && <PopUp setPopUp={setPopUp} bookid={id}/>}
         </div>
 
 
