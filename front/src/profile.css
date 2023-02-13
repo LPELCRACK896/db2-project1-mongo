@@ -48,12 +48,19 @@
     float: right;
 
 }
-
+.Logout{
+    padding: 15px;
+    background-color: #282c34;
+    color: aliceblue;
+    margin-top: 10px;
+    margin-right: -100px;
+    float: right;
+}
 .add{
     padding: 15px;
     background-color: #282c34;
     color: aliceblue;
-    /* margin-top: 10px; */
+    margin-top: 100px;
     margin-right: 10px;
     float: right;
 }

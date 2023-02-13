@@ -77,6 +77,7 @@ function Profile(){
 
         <p className='UserName'>{(user?user.username:"nombre")||"nombre"}</p>
         <button className='add'>Add friend</button>
+        <button className='Logout'>Log Out</button>
         <div className='UserCosas'>
             <p className='correo'>{(user?user.email:"email")||"email"}</p>
 
