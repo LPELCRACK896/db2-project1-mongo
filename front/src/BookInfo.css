@@ -13,6 +13,9 @@
 }
 
 .read{
+    margin-top: 5px;
+    margin-right: -160px;
+    margin-left:200px ;
     padding: 20px;
     width: 250px;
     float: right;
@@ -125,7 +128,7 @@
     background-color: #fde55ada;
 }
 .dedede{
-    margin-top: 90px;
+    margin-top: 180px;
     width: 160px;
     height: 60px;
     float: right;
