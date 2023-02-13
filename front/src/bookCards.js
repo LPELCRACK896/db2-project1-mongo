@@ -31,6 +31,7 @@ const Cards = () =>{
     const [selectAuthor, setSelectAuthor] = useState("any")
     const [selectRate, setSelectRate] = useState("any")
     const [selectReviewRate, setSelectReviewRate] = useState("any")
+    const [sort, setSort] =useState("none")
     //Query
     const [aggregation, setAggregation] = useState([])
     const [moreAggregations, setMoreAggregations] = useState([])
@@ -90,6 +91,31 @@ const Cards = () =>{
             break;
           default: 
             console.log(`No case defined ${selectRate}`)
+        }
+      }
+      if(sort!=="none"){
+        switch(sort){
+          case "Rate (desc)":
+            agg.push({$sort: {"rate": -1}})
+            break;
+          case "Rate (asc)":
+            agg.push({$sort: {"rate": 1}})
+            break;
+          case "Year (desc)":
+            agg.push({$sort: {"year": -1}})
+            break;
+          case "Year (asc)":
+            agg.push({$sort: {"year": 1}})
+            break;
+          case "Title (A-Z)":
+            agg.push({$sort: {"title": 1}})
+            break;
+          case "Title (Z-A)":
+            agg.push({$sort: {"title": -1}})
+            break;
+          default:
+            console.error("Invalid sort value");
+            break;
         }
       }
       //setMoreAggregations(moreagg)
@@ -195,6 +221,15 @@ const Cards = () =>{
             <option value="8">Good (8 or higher)</option>
             <option value="4">Just fine (4 or higher)</option>
             <option value="2"> Hm ok. (higher2)</option>
+          </select>
+          <select className="menu" value={sort} onChange={e=> setSort(e.target.value)}>
+            <option className= "opciones" value="none">Orden</option>
+            <option value="rate (desc)">Rate (desc)</option>
+            <option value="rate (asc)">Rate (asc)</option>
+            <option value="Year (desc)">Year (desc)</option>
+            <option value="Year (asc)">Year (asc)</option>
+            <option value="Title (A-Z)">Title (A-Z)</option>
+            <option value="Title (Z-A)">Title (Z-A)</option>
           </select>
           <button className="buscacion" onClick={buildAggregation}><FaSearch/></button>
         </nav>

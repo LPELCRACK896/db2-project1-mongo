@@ -6,7 +6,7 @@ import { Link, useParams } from "react-router-dom";
 import { books_HM } from './resources/images_mapping'
 const BCard = (props) => {
 
-  const {title, desc, rate, category, reviewerRate, image, _id, timesRated } = props.bookJson
+  const {title, desc, rate, category, reviewerRate, image, _id, timesRated, year} = props.bookJson
   const author = props.bookJson.author.name
   const pub_id = props.bookJson.publisher._id
   const pub_name = props.bookJson.publisher.username
@@ -29,7 +29,9 @@ const BCard = (props) => {
       <Card.Text className='cat'>
         Categoria: {category}
       </Card.Text>
-
+      <Card.Text className='cat'>
+        Año: {year}
+      </Card.Text>
       {/* <button className="agrega">{ButtonText}</button> */}
       <Link className="masinfo" to={`/book/${_id}`}>Mas informacion</Link>
 
