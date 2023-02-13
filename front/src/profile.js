@@ -235,7 +235,7 @@ function Profile(){
       fetchReadingBooks()
       fetchWantToReadBooks()
     }
-  }, [user])
+  }, [])
     return(
         <>
         
