@@ -25,6 +25,7 @@
 
 .UserName{
     font-size: 50px;
+    float: left;
 }
 
 .element{
@@ -35,14 +36,7 @@
     font-size: 50px;
 }
 
-.Logout{
-    padding: 15px;
-    background-color: #282c34;
-    color: aliceblue;
-    margin-top: -100px;
-    margin-right: 10px;
-    float: right;
-}
+
 
 .eliminar{
     float: right;
@@ -53,4 +47,13 @@
     margin-right: 10px;
     float: right;
 
+}
+
+.add{
+    padding: 15px;
+    background-color: #282c34;
+    color: aliceblue;
+    /* margin-top: 10px; */
+    margin-right: 10px;
+    float: right;
 }

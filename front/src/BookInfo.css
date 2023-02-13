@@ -9,10 +9,12 @@
 .Titulote{
     text-align: left;
     margin: 10px;
+    margin-right: 400px;
     font-size: 50px;
+    /* float: left; */
 }
 
-.read{
+/* .read{
     margin-top: 5px;
     margin-right: -160px;
     margin-left:200px ;
@@ -22,7 +24,7 @@
     font-size: 20px;
     background-color: #fde55ada;
     border: 5px solid #fdb1256e;
-}
+} */
 
 .Autorcito{
     text-align: left;
@@ -40,6 +42,7 @@
 .gatogoria{
     text-align: left;
     margin: 10px;
+    margin-bottom: 80px;
     font-size: 30px;
 }
 
@@ -128,7 +131,8 @@
     background-color: #fde55ada;
 }
 .dedede{
-    margin-top: 180px;
+    margin-top: 150px;
+    margin-left: 20px;
     width: 160px;
     height: 60px;
     float: right;
@@ -143,11 +147,23 @@
 }
 
 .read1{
-    margin-right: -160px;
     padding: 20px;
-    width: 250px;
+    width: 150px;
     float: right;
     font-size: 20px;
     background-color: #fde55ada;
     border: 5px solid #fdb1256e;
+}
+
+.botonetas{
+    margin-top: -100px;
+    margin-right: -160px;
+    display: grid;
+  grid-template-columns: 200px 200px ;
+  grid-template-rows:    123px 123px ;
+    min-height: 10vh;
+    max-height: 200vh;
+    min-width: 300px;
+    /* overflow: hidden; */
+    float: right;
 }

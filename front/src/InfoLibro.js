@@ -60,23 +60,34 @@ function InfoBooks(){
 return(
     
     <div>
-        <img className="BookPic" src={book?books_HM[book.image]:ATSAT} alt="book_cover" height={"500px"}></img>
         
+        <img className="BookPic" src={book?books_HM[book.image]:ATSAT} alt="book_cover" height={"500px"}></img>
+        <p className="Titulote">{book?book.title:"none"}</p>
         <div className="elimiran">
-        <button className="dedede">Delete book</button>
+            <button className="dedede">Delete book</button>
         </div>
         
-        <button className="read1">Mark as read</button>
-        
-        <p className="Titulote">{book?book.title:"none"}</p>
-        
-       
+        <div className="botonetas">
+        <div>
+            <button className="read1">Mark as read</button>
+        </div>
+
+        <div >
+            <button className="read1">Want to read</button>
+        </div>
+
+        <div >
+            <button className="read1">Like</button>
+        </div>
+
 <div>
     <div>
 {/* Aqui es el pop up */}
+<div >
+    <button onClick={()=>setPopUp(true)} className="read1" >Rate</button>
 
-<button onClick={()=>setPopUp(true)} className="read" >Rate</button>
-
+</div>
+   </div> 
 
         </div>
             {popUp && <PopUp setPopUp={setPopUp} bookid={id}/>}
@@ -88,6 +99,7 @@ return(
         <p className="Autorcito">{book?book.author:"none"}</p>
         <p className="publicaor">Publicado por: <Link to = {`/profile/${book?book.publisher._id:''}`}>{book?book.publisher.username:"none"}</Link></p>
         <p className="gatogoria">{book?book.category:"none"}</p>
+        
         <p className="desc">Descripcion <br></br>{book?book.desc:"none"}</p>
         <div className="ratingS"> 
             <h2 className="who"> User rating</h2>

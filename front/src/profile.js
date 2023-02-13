@@ -76,8 +76,7 @@ function Profile(){
         <img className='PPic'src={(user?users_HM[user.image]:user_default_1)||user_default_1} alt="user_pp" style={{width: "300px"}}/>
 
         <p className='UserName'>{(user?user.username:"nombre")||"nombre"}</p>
-
-        <button className='Logout'>Log Out</button>
+        <button className='add'>Add friend</button>
         <div className='UserCosas'>
             <p className='correo'>{(user?user.email:"email")||"email"}</p>
 
@@ -102,29 +101,7 @@ function Profile(){
             </p>
         </div>
 
-        <div className='Favbooks'>
-        <p className='Favoritos'>Read books</p>
-                <br></br>
-          <Element className="element" id="scroll-container" style={{
-            position: 'relative',
-            height: '200px',
-            overflow: 'scroll',
-            marginBottom: '100px'
-          }}>
-
-            <Element name="scroll-container-first-element" style={{
-              marginBottom: '20px'
-            }}>
-              book info
-          </Element>
-
-            <Element name="scroll-container-second-element" style={{
-              marginBottom: '20px'
-            }}>
-              book info
-          </Element>
-          </Element>
-        </div>
+        
 
         <div className='Favbooks'>
         <p className='Favoritos'>Bookish friends</p>
