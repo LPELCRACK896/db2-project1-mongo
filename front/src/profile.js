@@ -1,7 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { Link, DirectLink, Element, Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
-import ATSAT from './ATSAT.jpg'
 import './profile.css'
 import { users_HM } from './resources/images_mapping'
 import user_default_1 from './pictures/users/default_user_3.png'
@@ -78,6 +76,8 @@ function Profile(){
         <img className='PPic'src={(user?users_HM[user.image]:user_default_1)||user_default_1} alt="user_pp" style={{width: "300px"}}/>
 
         <p className='UserName'>{(user?user.username:"nombre")||"nombre"}</p>
+
+        <button className='Logout'>Log Out</button>
         <div className='UserCosas'>
             <p className='correo'>{(user?user.email:"email")||"email"}</p>
 
@@ -228,6 +228,10 @@ function Profile(){
           </Element>
 
           
+        </div>
+
+        <div>
+          <button className='eliminar'>Delete profile</button>
         </div>
         </>
     )
