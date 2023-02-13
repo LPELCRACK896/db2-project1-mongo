@@ -13,6 +13,11 @@ function Profile(){
   const {id} = useParams()
   const [isItMe, setIsItMe] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [favBooks, setFavbooks] = useState([])
+  const [friends, setFriends] = useState([])
+  const [ratedBooks, setRatedBooks] = useState([])
+  const [readingBooks, setReadinBooks] = useState([])
+  const [wantToRead, setWantToRead] = useState([])
 
   const swalError = () =>{
     Swal.fire({
@@ -155,6 +160,67 @@ function Profile(){
     }}).then(res=> res.data)
     console.log(res)
   }
+  const fetchFavsBooks = async()=>{
+    if (!user._id) return
+    const res = await axios.get(`http://localhost:5000/api/v1/persons/favBooks/${user._id}`) 
+    if(!res.data.success) {      
+      return 
+    }
+    if(res.data.data.lenth===0)
+    {
+      return
+    }
+    setFavbooks(res.data.data)
+  }
+  const fetchFriends = async()=>{
+    if (!user._id) return
+    const res = await axios.get(`http://localhost:5000/api/v1/persons/friends/${user._id}`) 
+    if(!res.data.success) {      
+      return 
+    }
+    if(res.data.data.lenth===0)
+    {
+      return
+    }
+    setFriends(res.data.data)
+  }
+  const fetchRatedBooks = async()=>{
+    if (!user._id) return
+    const res = await axios.get(`http://localhost:5000/api/v1/persons/ratedbooks/${user._id}`) 
+    if(!res.data.success) {      
+      return 
+    }
+    if(res.data.data.lenth===0)
+    {
+      return
+    }
+    setRatedBooks(res.data.data)
+  }
+
+  const fetchReadingBooks = async()=>{
+    if (!user._id) return
+    const res = await axios.get(`http://localhost:5000/api/v1/persons/readingbooks/${user._id}`) 
+    if(!res.data.success) {      
+      return 
+    }
+    if(res.data.data.lenth===0)
+    {
+      return
+    }
+    setReadinBooks(res.data.data)
+  }
+  const fetchWantToReadBooks = async()=>{
+    if (!user._id) return
+    const res = await axios.get(`http://localhost:5000/api/v1/persons/wanttoread/${user._id}`) 
+    if(!res.data.success) {      
+      return 
+    }
+    if(res.data.data.lenth===0)
+    {
+      return
+    }
+    setWantToRead(res.data.data)
+  }
   useEffect(()=>{
     if (id){
       getUser()
@@ -162,9 +228,14 @@ function Profile(){
       return
     }
     getMe()
-    console.log(user)
-    
-  }, [])
+    if(user){
+      fetchFavsBooks()
+      fetchFriends()
+      fetchRatedBooks()
+      fetchReadingBooks()
+      fetchWantToReadBooks()
+    }
+  }, [user])
     return(
         <>
         
@@ -188,11 +259,11 @@ function Profile(){
                 <p className='Favoritos'>Favorite books</p>
                 <br></br>
             <Element className="element" id="scroll-container" style={{ position: 'relative', height: '200px', overflow: 'scroll',marginBottom: '100px'}}>
-{/*             {user.favBooks&&
-            user.favBooks.map(book=>{
-                <Element style={{ marginBottom: '10px'}}> book info 1 </Element>
-            })
-            } */}
+            {favBooks&&
+            favBooks.map(book=>
+                <Element style={{ marginBottom: '10px'}}><Link to={`/book/${book._id}`}> {book.title}</Link> </Element>
+            )
+            }
           </Element>
             </p>
         </div>
@@ -209,17 +280,13 @@ function Profile(){
             marginBottom: '100px'
           }}>
 
-            <Element name="scroll-container-first-element" style={{
-              marginBottom: '20px'
-            }}>
-              This is the longest name a person can have
-          </Element>
+            {friends&&
+            friends.map(friend=>
+              <Element name="scroll-container-first-element" style={{ marginBottom: '20px' }}>
+              {friend.username}
+              </Element>)}
 
-            <Element name="scroll-container-second-element" style={{
-              marginBottom: '20px'
-            }}>
-              Friend2
-          </Element>
+
           </Element>
 
           
@@ -235,17 +302,13 @@ function Profile(){
             marginBottom: '100px'
           }}>
 
-            <Element name="scroll-container-first-element" style={{
-              marginBottom: '20px'
-            }}>
-              Book1
-          </Element>
+            {ratedBooks&&
+            ratedBooks.map(book=>
+              <Element name="scroll-container-first-element" style={{ marginBottom: '20px' }}>
+              {book.title}
+          </Element>)}
 
-            <Element name="scroll-container-second-element" style={{
-              marginBottom: '20px'
-            }}>
-              Book 2
-          </Element>
+            
           </Element>
 
           
@@ -261,17 +324,14 @@ function Profile(){
             marginBottom: '100px'
           }}>
 
-            <Element name="scroll-container-first-element" style={{
-              marginBottom: '20px'
-            }}>
-              Friend1
-          </Element>
+          {readingBooks&&
+          readingBooks.map(book=>
+            <Element name="scroll-container-first-element" style={{ marginBottom: '20px' }}>
+              {book.title}
+            </Element>)
+          }
 
-            <Element name="scroll-container-second-element" style={{
-              marginBottom: '20px'
-            }}>
-              Friend2
-          </Element>
+            
           </Element>
 
           
@@ -285,19 +345,14 @@ function Profile(){
             height: '200px',
             overflow: 'scroll',
             marginBottom: '100px'
-          }}>
+          }}> 
+          {wantToRead&&
+            wantToRead.map(book => 
+            <Element name="scroll-container-first-element" style={{ marginBottom: '20px' }}>
+              {book.title}
+            </Element>)}
 
-            <Element name="scroll-container-first-element" style={{
-              marginBottom: '20px'
-            }}>
-              Friend1
-          </Element>
-
-            <Element name="scroll-container-second-element" style={{
-              marginBottom: '20px'
-            }}>
-              Friend2
-          </Element>
+           
           </Element>
 
           
