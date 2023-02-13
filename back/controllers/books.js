@@ -87,6 +87,7 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                     author: "$author.name",
                     author_id: "$author._id",
                     pages: "$pages",
+                    title: "$title",
                     year: "$year",
                     desc: "$desc",
                     category: "$category",
@@ -175,6 +176,9 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
                   },
                   rate: {
                     $first: "$rate",
+                  },
+                  title: {
+                    $first: "$title"
                   },
                   image:{
                     $first: "$image"
@@ -273,7 +277,9 @@ exports.newRate = asyncHandler(async(req, res, next)=>{
 
 
 })
-
+// @desc Gets a new rate
+// @route PUT /api/v1/books/find
+// @access Public
 exports.findBook = asyncHandler(async(req, res, next)=>{
     const { keyword } = req.body
     let { limit, page } = req.body
@@ -287,4 +293,28 @@ exports.findBook = asyncHandler(async(req, res, next)=>{
 
 
     return res.status(200).json({success: true, data: books, totalPages})
+})
+
+// @desc Gets a new rate
+// @route POST /api/v1/books/filtr
+// @access Public
+exports.filtrBook = asyncHandler(async(req, res, next)=>{
+  const {limit, skip} = req.body
+  let { aggregation } = req.body
+  //Structure: {field: "publisher", value: 63e7f582c59a747b821a781f} --> {$match: {"publisher": ObjectId('63e7f582c59a747b821a781f')}}
+  
+  /* if (id_aggregations) {
+    aggregation = aggregation?aggregation:[]
+    console.log(id_aggregations)
+    console.log() 
+    id_aggregations = id_aggregations.map(agg =>JSON.parse({"$match": {"publisher": mongoose.Types.ObjectId(agg.value)}}) )
+    console.log(id_aggregations)
+    aggregation = aggregation.concat(id_aggregations)
+  } */
+  console.log(aggregation)
+  if (!aggregation){
+    return next(new ErrorResponse("Must include an aggregation pipeline (some filter)", 404))
+  }
+  const data = await Book.aggregate(aggregation)
+  res.status(200).json({success: true, data})
 })

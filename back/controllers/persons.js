@@ -1,7 +1,9 @@
 const ErrorResponse = require('../utils/errorResponse')
 const asyncHandler = require('../middlewares/async')
 const {User, EmbededBook} = require('../models/User')
+const {Book} = require('../models/Book')
 const { mongoose } = require('mongoose')
+
 
 // @desc    Get all users
 // @route   GET /api/v1/persons
@@ -52,3 +54,67 @@ exports.getPerson = asyncHandler(async(req, res, next)=>{
         data: user
     })
 })
+
+// @desc    Get a list of publishers
+// @route   GET /api/v1/publishers
+// @access  Public
+exports.getPublishers = asyncHandler(async(req, res, next)=>{
+    const user = await Book.aggregate([
+        {
+          $group:
+            /**
+             * _id: The id of the group.
+             * fieldN: The first field name.
+             */
+            {
+              _id: "$publisher",
+            },
+        },
+        {
+          $lookup:
+            /**
+             * from: The target collection.
+             * localField: The local join field.
+             * foreignField: The target join field.
+             * as: The name for the results.
+             * pipeline: Optional pipeline to run on the foreign collection.
+             * let: Optional variables to use in the pipeline field stages.
+             */
+            {
+              from: "users",
+              localField: "_id",
+              foreignField: "_id",
+              as: "publisher",
+            },
+        },
+        {
+          $unwind:
+            /**
+             * path: Path to the array field.
+             * includeArrayIndex: Optional name for index.
+             * preserveNullAndEmptyArrays: Optional
+             *   toggle to unwind null and empty values.
+             */
+            {
+              path: "$publisher",
+              includeArrayIndex: "arrayIndex",
+              preserveNullAndEmptyArrays: false,
+            },
+        },
+        {
+          $project:
+            /**
+             * specifications: The fields to
+             *   include or exclude.
+             */
+            {
+              _id: "$publisher._id",
+              name: "$publisher.username",
+            },
+        },
+      ])
+    res.status(200).json({
+        success: true, 
+        data: user
+    })
+  })

@@ -6,9 +6,10 @@ import { Link, useParams } from "react-router-dom";
 import { books_HM } from './resources/images_mapping'
 const BCard = (props) => {
 
-  const {title, desc, rate, category, reviewerRate, image, _id, publisher } = props.bookJson
+  const {title, desc, rate, category, reviewerRate, image, _id, timesRated } = props.bookJson
   const author = props.bookJson.author.name
-  console.log(props.bookJson)
+  const pub_id = props.bookJson.publisher._id
+  const pub_name = props.bookJson.publisher.username
   return (
     <Card style={{ width: '25rem'}}>
     <Card.Img variant="top" src={books_HM[image]} alt={image} />
@@ -18,7 +19,7 @@ const BCard = (props) => {
         {desc}
       </Card.Text>
       <Card.Text className='rating'>
-       User rating: {rate}/5
+       User rating: {rate/timesRated}/5
        <br></br>
        Reviewer rating: {reviewerRate}/10
       </Card.Text>
@@ -34,8 +35,8 @@ const BCard = (props) => {
 
      <Card.Text>
         Agregado por:
-        <Link to={`/profile/${publisher._id}`}>
-         {publisher.username}
+        <Link to={`/profile/${pub_id}`}>
+         {pub_name}
         </Link>
       </Card.Text>
     </Card.Body>

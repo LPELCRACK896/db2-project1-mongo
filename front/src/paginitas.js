@@ -17,7 +17,7 @@ import { users_HM } from './resources/images_mapping'
 import user_default_1 from './pictures/users/default_user_1.png'
 
 export const Home = () => {
-  const [username, setUsername] = useState("...who are you??")
+  const [username, setUsername] = useState({username: "...who are you??", _id: null})
   useEffect(()=>{
     const getMe = async() =>{
       const token = localStorage.getItem("token")
@@ -29,7 +29,8 @@ export const Home = () => {
       } ).then(res => res.data)
       console.log(res)
       if(!res.success) return
-      setUsername(res.data.username)
+      const {username, _id} = res.data
+      setUsername({username, _id})
     }
     getMe()
   }, [])
@@ -39,31 +40,10 @@ export const Home = () => {
         <header className="Cabeza">
           <img src={logo} alt="bee pattern " className="bee"/>
           <h2 className="comp">Books Bee Books</h2>
-          <p className="user" ><Link  className="user" to="/login">{username}</Link></p>
+          <p className="user" ><Link  className="user" to={username._id?"/profile":"/login"}>{username.username}</Link></p>
            <Link  className="linkcito" to="/buscar">Buscar Libros</Link> | <Link className="linkcito" to="/usuarios">Buscar usuarios</Link> | <Link className="linkcito" to="/author">Buscar autores</Link>
           
         </header>
-        <nav className="Navegacion">
-      Filtros | <select className="menu"><option className= "opciones" value="Cat0">Cualquier categoria</option>
-                  <option value="Cat1">Novela</option>
-                  <option value="Cat2">Fantasia</option>
-
-                </select> | <select className="menu">
-                  <option className= "opciones" value="Auth0">Cualquier autor</option>
-                  <option value="Auth1">Author1</option><option value="Auth2">Author2</option>
-
-                </select> | <select className="menu">
-                  <option className= "opciones" value="Pub0">Cualquier publicador</option>
-                  <option value="Pub1">Bloomsbury</option><option value="Pub2">Harper</option>
-                  <option value="Pub3">Penguin</option>
-
-                </select> | <select className="menu">
-                  <option className= "opciones" value="Rating">Cualquier rating</option>
-                  <option value="rateHigh">5-4</option>
-                  <option value="rateMid">2-3</option>
-                  <option value="rateLow">0-1</option>
-                </select>
-    </nav>
       <Inicio/>
       
     </div>
