@@ -61,18 +61,28 @@ return(
     
     <div>
         <img className="BookPic" src={book?books_HM[book.image]:ATSAT} alt="book_cover" height={"500px"}></img>
-        <button className="read">Mark as read</button>
+        
+        <div className="elimiran">
+        <button className="dedede">Delete book</button>
+        </div>
+        
+        <button className="read1">Mark as read</button>
+        
         <p className="Titulote">{book?book.title:"none"}</p>
+        
+       
 <div>
     <div>
-{/* Aqui es la clase de arriba del pop up */}
+{/* Aqui es el pop up */}
 
 <button onClick={()=>setPopUp(true)} className="read" >Rate</button>
+
+
         </div>
             {popUp && <PopUp setPopUp={setPopUp}/>}
         </div>
 
-{/* <button onClick={popUp && <PopUp setPopUp={setPopUp}/>}>rate</button> */}
+
         
         
         <p className="Autorcito">{book?book.author:"none"}</p>

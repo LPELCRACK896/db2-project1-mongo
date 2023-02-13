@@ -18,7 +18,7 @@
     float: right;
     font-size: 20px;
     background-color: #fde55ada;
-    border: 5px solid #fde55a6e;
+    border: 5px solid #fdb1256e;
 }
 
 .Autorcito{
@@ -123,4 +123,28 @@
     width: 150px;
     font-size: 20px;
     background-color: #fde55ada;
+}
+.dedede{
+    margin-top: 90px;
+    width: 160px;
+    height: 60px;
+    float: right;
+    font-size: 15px;
+    background-color: #fd5a5ada;
+    border: 5px solid #fd5a5a6e;
+}
+
+.elimiran{
+    float: right;
+    display: inline-grid;
+}
+
+.read1{
+    margin-right: -160px;
+    padding: 20px;
+    width: 250px;
+    float: right;
+    font-size: 20px;
+    background-color: #fde55ada;
+    border: 5px solid #fdb1256e;
 }
