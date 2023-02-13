@@ -59,7 +59,15 @@ function Iniciacion() {
       {
         email,
         password
-      }).then(res => res.data)
+      }).then(res => res.data).catch(err=>{
+        if(err){
+          Swal.fire({
+            icon: "error",
+            title: err.response.data.error,
+          })
+          return
+        }
+      })
     if (!res.success){
       const errsHtml = res.err?`<ul>${res.error.split(",").map(err => `<li>${err}</li>`).toString()}</ul>`:"Unexpected error"
       Swal.fire({
