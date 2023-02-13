@@ -19,7 +19,7 @@ exports.createBook = asyncHandler(async (req, res, next ) => {
     let book = new Book({ title: req.body.title, author: {name: author.name, age: author.age, auth_id: author._id}, publisher: mongoose.Types.ObjectId(publisher) , pages: req.body.pages, year: req.body.year, isbn: req.body.isbn, rate: req.body.rate, desc: req.body.desc, category: req.body.category, image: req.body.image})
     book = await book.save()
     author = await Author.findByIdAndUpdate(req.body.author, {$push: {books: book}}, {new: true})
-    res.status(201).json({succes: true, book, author})
+    res.status(201).json({success: true, book, author})
 })
 
 // @desc Get all books
@@ -223,7 +223,7 @@ exports.deleteBook = asyncHandler(async(req, res, next)=>{
         return next(new ErrorResponse(`User ${req.user.username} unauthorized`, 401))
     }
     await book.remove()
-    return res.status(200).json({succes: true, author})
+    return res.status(200).json({success: true, author})
 })
 
 // @desc Update one book
@@ -240,7 +240,7 @@ exports.updateBook = asyncHandler(async(req, res, next)=>{
         new: true, 
         runValidators: true
     })
-    if (book) return res.status(200).json({succes: true, data: book})
+    if (book) return res.status(200).json({success: true, data: book})
     return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
 })
 
@@ -260,19 +260,19 @@ exports.newRate = asyncHandler(async(req, res, next)=>{
             return book
         })
         
-        if (diffRate===0) return res.status(200).json({succes: true, msg: "Punctuation previously setted with same value"})
+        if (diffRate===0) return res.status(200).json({success: true, msg: "Punctuation previously setted with same value"})
 
         const user = await User.findByIdAndUpdate(req.user._id, {$set: {ratedBooks: ratedBooks}}, {new: true})
         const book = await Book.findByIdAndUpdate({_id: id}, { $inc: { rate: diffRate }}, {new: true})
         
-        if (book) return res.status(200).json({succes: true, data: book, user})
+        if (book) return res.status(200).json({success: true, data: book, user})
         return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
         
     }
     ratedBooks.push(new EmbededBook({rate: req.body.rate, book: id}))
     const user = await User.findByIdAndUpdate(req.user._id, {ratedBooks}, {new: true})
     const book = await Book.findByIdAndUpdate({_id: id}, { $inc: {timesRated: 1, rate: req.body.rate}}, {new: true})
-    if (book) return res.status(200).json({succes: true, data: book, user})
+    if (book) return res.status(200).json({success: true, data: book, user})
 
 
 

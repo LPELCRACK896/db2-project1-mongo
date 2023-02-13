@@ -14,6 +14,7 @@ function Profile(){
   const [user, setUser] = useState()
   const {id} = useParams()
   const [isItMe, setIsItMe] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const swalError = () =>{
     Swal.fire({

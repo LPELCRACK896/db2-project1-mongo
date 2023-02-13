@@ -69,7 +69,7 @@ return(
 
 <button onClick={()=>setPopUp(true)} className="read" >Rate</button>
         </div>
-            {popUp && <PopUp setPopUp={setPopUp}/>}
+            {popUp && <PopUp setPopUp={setPopUp} bookid={id}/>}
         </div>
 
 {/* <button onClick={popUp && <PopUp setPopUp={setPopUp}/>}>rate</button> */}
