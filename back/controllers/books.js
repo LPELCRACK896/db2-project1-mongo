@@ -34,7 +34,7 @@ exports.getBooks = asyncHandler(async (req, res, next)=>{
 // @access   Public
 exports.getBook = asyncHandler(async (req, res, next)=>{
     const id = mongoose.Types.ObjectId(req.params.id)
-    const book = await Book.aggregate(
+    let book = await Book.aggregate(
         [
             {
               $match:
@@ -206,8 +206,73 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
         
         ]
     )
+    if (book.length===0)
+      book = await Book.aggregate([{
+        $match:
+          /**
+           * query: The query in MQL.
+           */
+          {
+            _id: id,
+          },
+      },
+      {
+          $lookup:
+            /**
+             * from: The target collection.
+             * localField: The local join field.
+             * foreignField: The target join field.
+             * as: The name for the results.
+             * pipeline: Optional pipeline to run on the foreign collection.
+             * let: Optional variables to use in the pipeline field stages.
+             */
+            {
+              from: "users",
+              localField: "publisher",
+              foreignField: "_id",
+              as: "publisher",
+            },
+        },
+        {
+          $unwind:
+            /**
+             * path: Path to the array field.
+             * includeArrayIndex: Optional name for index.
+             * preserveNullAndEmptyArrays: Optional
+             *   toggle to unwind null and empty values.
+             */
+            {
+              path: "$publisher",
+              includeArrayIndex: "arrayIndex",
+              preserveNullAndEmptyArrays: false,
+            },
+        },
+        {
+          $project:
+            /**
+             * specifications: The fields to
+             *   include or exclude.
+             */
+            {
+              _id: "$_id",
+              author: "$author.name",
+              author_id: "$author._id",
+              pages: "$pages",
+              title: "$title",
+              year: "$year",
+              desc: "$desc",
+              category: "$category",
+              publisher: "$publisher",
+              publisher_id: "$publisher._id",
+              rate: {
+                $divide: ["$rate", "$timesRated"],
+              },
+              reviewerRate: 1,
+              image: 1
+            },
+        }])
     if (book.length!==0) return res.status(200).json({success: true, data: book[0]})
-    return next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+    return next(new ErrorResponse(`Book not found with id ${req.params.id}`, 404))
 })
 
 
@@ -216,7 +281,7 @@ exports.getBook = asyncHandler(async (req, res, next)=>{
 // @access Private
 exports.deleteBook = asyncHandler(async(req, res, next)=>{
     const book = await Book.findById(req.params.id)
-    if (!book) next(new ErrorResponse(`Book not found with id ${req.params.id}'`, 404))
+    if (!book) next(new ErrorResponse(`Book not found with id ${req.params.id}`, 404))
     let author = await Author.findByIdAndUpdate(book.author.auth_id, {$pull: {books: {_id: book._id}}}, {new: true})
     //Make sure user is the book owner
     if(book.publisher.toString() !== req.user.id && req.user.role !=='admin'){
